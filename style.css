@@ -31,6 +31,7 @@ ul {
 .section-title {
     font-size: 2.5rem;
     text-align: center;
+    margin: 1rem 0;
 }
 
 /* Custom Styles */
@@ -87,4 +88,42 @@ header .container nav a:hover {
 #about .about-summary {
     max-width: calc(var(--WEBSITE-WIDTH) / 2);
     font-size: 1.4rem;
+}
+
+#portfolio {
+    background-color: #222;
+    color: #fff;
+    padding: 1rem;
+}
+
+#portfolio .project-items{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#portfolio .project-items .project{
+    width: 30%;
+}
+
+#portfolio .project-items .project .project-photo{
+    display: flex;
+    justify-content: center;
+}
+
+#portfolio .project-items .project img{
+    object-fit: cover;
+    height: 240px;
+    width: 100%;
+}
+
+
+#portfolio .project-items .project .project-summary {
+    text-align: center;
+}
+
+#portfolio .project-items .project .project-title {
+    color: var(--PRIMARY-COLOR);
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
 }
