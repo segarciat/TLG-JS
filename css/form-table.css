@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     max-width: 1200px;
@@ -32,23 +36,40 @@ header nav a:hover {
     background-color: rgb(216, 112, 147, 0.9);
 }
 
-article, #contact {
+main, #contact {
+    background-color: #fff;
     background-color: #fff;
     margin: 1rem 0;
     padding: 2rem;
+    border-radius: 10px;
 }
+
+article {
+    background-color: bisque;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 10px;
+}
+
 
 article table {
     padding: 1rem;
+    border: 1px solid black;
+    border-collapse: collapse;
 }
+
+article table td, article table th {
+    border: 1px solid black;
+    padding: 0.5rem;
+}
+
 
 #contact form {
     margin: 0 auto;
-    padding: 2rem;
 }
 
 .form-group {
-    margin: 0.5rem 0;
+    margin: 0.5rem 1rem;
 }
 
 footer {
