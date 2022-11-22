@@ -1,3 +1,10 @@
+/* Variables */
+:root {
+    --PRIMARY-COLOR: #55F;
+    --WEBSITE-WIDTH: 1200px;
+    --CUSTOM-FONT: 'Ubuntu', sans-serif;
+}
+
 /* CSS Reset */
 * {
     padding: 0;
@@ -14,10 +21,45 @@ ul {
     list-style: none;
 }
 
+/* Utilities */
+
+.container {
+    max-width: var(--WEBSITE-WIDTH);
+    margin: 0 auto;
+}
+
 /* Custom Styles */
+body {
+    font-family: var(--CUSTOM-FONT);
+    background-color: #eee;
+}
 
 header {
+    background-color: #333;
+    height: 4rem;
+}
+
+header .container {
     display: flex;
     justify-content: space-between;
-    padding: 1rem;
+    align-items: center;
+    height: 100%;
+}
+
+
+header .container nav {
+    display: flex;
+    justify-content: row;
+    align-items: center;
+    height: 100%;
+}
+
+
+header .container nav a {
+    color: #fff;
+    padding: 1rem 2rem;
+}
+
+header .container nav a:hover {
+    background-color: var(--PRIMARY-COLOR);
 }
