@@ -37,11 +37,11 @@ ul {
 /* Custom Styles */
 body {
     font-family: var(--CUSTOM-FONT);
-    background-color: #eee;
+    background-color: #333;
+
 }
 
 header {
-    background-color: #333;
     height: 4rem;
 }
 
@@ -72,6 +72,8 @@ header .container nav a:hover {
 
 #about {
     padding: 1rem;
+    background-color: #eee;
+
 }
 
 #about .about-photo-container img{
@@ -88,12 +90,12 @@ header .container nav a:hover {
 #about .about-summary {
     max-width: calc(var(--WEBSITE-WIDTH) / 2);
     font-size: 1.4rem;
+    hyphens: auto;
 }
 
 #portfolio {
-    background-color: #222;
     color: #fff;
-    padding: 1rem;
+    padding: 2rem;
 }
 
 #portfolio .project-items{
@@ -126,4 +128,50 @@ header .container nav a:hover {
     color: var(--PRIMARY-COLOR);
     margin: 0.5rem 0;
     font-size: 1.2rem;
+}
+
+#resume {
+    background-color: #eee;
+    padding: 2rem;
+}
+
+#resume .resume-btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#resume .resume-btns .view-resume-btn, #resume .resume-btns .download-resume-btn{
+    margin: 0 1rem;
+    padding: 1rem 1.5rem;
+    background-color: var(--PRIMARY-COLOR);
+    color: #fff;
+}
+
+footer {
+    color: #fff;
+    padding: 1rem;
+}
+
+footer .social-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+footer .social-links li a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px #fff solid;
+    border-radius: 50%;
+    padding: 0.8rem;
+    margin: 0 1rem;
+    height: 2rem;
+    width: 2rem;
+}
+
+footer .social-links li a:hover{
+    color: var(--PRIMARY-COLOR);
+    border-color: var(--PRIMARY-COLOR);
 }
