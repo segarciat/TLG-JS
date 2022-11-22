@@ -12,6 +12,10 @@
     box-sizing: border-box;
 }
 
+body {
+    height: 100%;
+}
+
 a {
     all: unset;
     cursor: pointer;
@@ -19,6 +23,10 @@ a {
 
 ul {
     list-style: none;
+}
+
+img {
+    width: 100%;
 }
 
 /* Utilities */
@@ -38,11 +46,15 @@ ul {
 body {
     font-family: var(--CUSTOM-FONT);
     background-color: #333;
-
 }
 
 header {
-    height: 4rem;
+    background-color: #333;
+    width: 100%;
+}
+
+header .logo {
+    padding: 0.8rem;
 }
 
 header .container {
@@ -80,18 +92,16 @@ header .container nav a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 300px;
 }
 
 #about .about-photo-container{
     border-radius: 50%;
-    width: 300px;
+    max-width: 300px;
     margin: 0 1rem;
 }
 
 #about .about-photo-container img {
     object-fit: cover;
-    width: 100%;
     border-radius: 50%;
 }
 
@@ -101,7 +111,6 @@ header .container nav a:hover {
     hyphens: auto;
     background-color: #fff;
     border-radius: 5px;
-    height: 75%;
     padding: 1.5rem;
     margin: 0 1rem;
 }
@@ -197,4 +206,43 @@ footer .social-links li a{
 footer .social-links li a:hover{
     color: var(--PRIMARY-COLOR);
     border-color: var(--PRIMARY-COLOR);
+}
+
+/* Phone Media query*/
+@media (max-width: 420px) {
+
+    header {
+        position: fixed;
+        top: 0;
+    }
+
+    header .container {
+        flex-direction: column;
+    }
+
+    header .container nav  {
+        justify-content: space-around;
+    }
+
+    header .container nav a{
+        padding: 0.7rem;
+        font-size: 0.9rem;
+    }
+
+    #about .container #about-content{
+        flex-direction: column;
+    }
+
+    #about .container .about-photo-container {
+        margin-bottom: 1rem;
+    }
+
+    #portfolio .project-items {
+        flex-direction: column;
+    }
+
+    #portfolio .project-items .project {
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
 }
