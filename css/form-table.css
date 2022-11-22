@@ -1,0 +1,58 @@
+body {
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #eee;
+}
+
+a {
+    all: unset;
+    cursor: pointer;
+}
+
+header{
+    width: 100%;
+    background-color: rgba(216, 112, 147, 0.8);
+    color: white;
+    padding: 0.5rem;
+    display: flex;
+    padding: 1rem;
+}
+
+header nav {
+    margin-left: 1rem;
+}
+
+header nav a {
+    padding: 1rem;
+}
+
+header nav a:hover {
+    color: rgb(0, 198, 248);
+    background-color: rgb(216, 112, 147, 0.9);
+}
+
+article, #contact {
+    background-color: #fff;
+    margin: 1rem 0;
+    padding: 2rem;
+}
+
+article table {
+    padding: 1rem;
+}
+
+#contact form {
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.form-group {
+    margin: 0.5rem 0;
+}
+
+footer {
+    background-color: rgb(216, 112, 147, 0.9);
+    color: #fff;
+    padding: 1rem;
+}
