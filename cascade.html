@@ -1,8 +1,51 @@
 <html>
-  <head></head>
+  <head>
+    <style>
+      #target {
+        font-style: italic;
+        font-weight: normal;
+      }
+
+      .urgent {
+        color: red;
+        font-weight: bold;
+      }
+
+      p {
+        font-weight: normal;
+      }
+
+      div {
+        background-color: #e0e0e0;
+      }
+
+      body {
+        margin: 2em;
+      }
+
+      div > p {
+        font-size: larger;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      p:first-child {
+        font-family: "Courier New", Courier, monospace;
+      }
+    </style>
+  </head>
   <body>
     <div>
-      <p>What will this look like?</p>
+      <p id="target" target>What will this look like?</p>
+      <a href="#target"><p>Another paragraph inside the div.</p></a>
     </div>
+    <p>This is a second paragraph</p>
+    <p class="urgent">This is very very very urgent</p>
   </body>
 </html>
