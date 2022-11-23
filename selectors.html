@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Selectors Exercise</title>
+    <style>
+      div {
+        margin: 1em;
+        padding: 0.5em;
+      }
+
+      .foods {
+        background-color: lightgray;
+        font-style: italic;
+      }
+
+      .movies {
+        background-color: black;
+        color: yellow;
+      }
+
+      .binged {
+        background-color: lightblue;
+      }
+
+      .binged > div {
+        background-color: maroon;
+        color: lightblue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="foods">
+      <ul>
+        <li>Seafood</li>
+        <li>Pastries</li>
+        <li>Stews</li>
+      </ul>
+    </div>
+    <div class="movies">
+      <ul>
+        <li>Spirited Away</li>
+        <li>Pokemon 2000</li>
+        <li>Guardians of the Galaxy</li>
+      </ul>
+    </div>
+    <div class="binged">
+      <div>
+        <ul>
+          <li>Saiki K</li>
+          <li>What's wrong with Secretary Kim?</li>
+          <li>Durarara</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
