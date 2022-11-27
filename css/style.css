@@ -126,12 +126,18 @@ header .container nav a:hover {
 #portfolio {
     color: #fff;
     padding: 2rem;
+    text-align: center;
+}
+
+#portfolio .section-title + p a{
+    color: var(--PRIMARY-COLOR);
 }
 
 #portfolio .project-items{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin: 1rem 0;
 }
 
 #portfolio .project-items .project{
