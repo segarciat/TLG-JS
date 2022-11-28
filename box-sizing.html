@@ -8,6 +8,7 @@
     <style>
       .image-1 {
         box-sizing: border-box;
+        border: 1px solid black;
       }
 
       .image-2 {
@@ -33,13 +34,14 @@
         position: absolute;
         right: 25%;
         bottom: 25%;
-        transition: ease-in-out 0.5s width;
+        transition: ease-in-out 0.5s background-color;
+        outline: 3px solid blueviolet;
       }
 
       div:nth-child(2):hover {
         outline: 3px inset green;
         border: none;
-        width: 400px;
+        background-color: teal;
       }
     </style>
   </head>
