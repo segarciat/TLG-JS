@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Box Sizing</title>
+    <style>
+      .image-1 {
+        box-sizing: border-box;
+      }
+
+      .image-2 {
+        box-sizing: content-box;
+      }
+
+      .image-1,
+      .image-2 {
+        width: 300px;
+        padding: 1rem;
+        transition: 1s ease-in-out transform;
+      }
+
+      img {
+        width: 100%;
+      }
+
+      .image-1:hover {
+        transform: rotate(360deg);
+      }
+
+      .image-2 {
+        position: absolute;
+        right: 25%;
+        bottom: 25%;
+        transition: ease-in-out 0.5s width;
+      }
+
+      div:nth-child(2):hover {
+        outline: 3px inset green;
+        border: none;
+        width: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="image-1">
+      <img
+        src="https://maxwelldemon.files.wordpress.com/2012/03/prime_factor_spiral_10000.png"
+        alt="Prime Spiral"
+      />
+    </div>
+
+    <div class="image-2">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/NGC_4414_%28NASA-med%29.jpg/1200px-NGC_4414_%28NASA-med%29.jpg"
+        alt="Milky Way"
+      />
+    </div>
+  </body>
+</html>
