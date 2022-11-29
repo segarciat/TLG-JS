@@ -1,0 +1,39 @@
+body {
+    background-color: red;
+}
+
+h1 {
+    text-align: center;
+    color: #fff;
+}
+
+@media (min-width: 576px) {
+    body {
+        background-color: blue;
+    }
+}
+
+
+@media (min-width: 768px) {
+    body {
+        background-color: yellow;
+    }
+}
+
+@media (min-width: 992px) {
+    body {
+        background-color: green;
+    }
+}
+
+@media (min-width: 1200px) {
+    body {
+        background-color: purple;
+    }
+}
+
+@media (min-width: 1400px) {
+    body {
+        background-color: orange;
+    }
+}
