@@ -21,7 +21,7 @@ h1 {
     height: 200px;
     width: 200px;
     border-radius: 0;
-    transition: 1s ease-in border-radius;
+    transition: 0.05s ease-in border-radius;
     margin: 0 auto;
     margin: 4rem 0;
 }
