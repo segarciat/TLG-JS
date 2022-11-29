@@ -7,9 +7,37 @@ h1 {
     color: #fff;
 }
 
+.resize {
+    background-color: black;
+    height: 100px;
+    width: 100px;
+    margin: 0 auto;
+    transition: 0.05s ease-in;
+}
+
+.changing-shape {
+    background-color: white;
+    border: 5px solid salmon;
+    height: 200px;
+    width: 200px;
+    border-radius: 0;
+    transition: 1s ease-in border-radius;
+    margin: 0 auto;
+    margin: 4rem 0;
+}
+
 @media (min-width: 576px) {
     body {
         background-color: blue;
+    }
+
+    .resize {
+        height: 200px;
+        width: 200px;
+    }
+
+    .changing-shape {
+        border-radius: 5%;
     }
 }
 
@@ -18,11 +46,30 @@ h1 {
     body {
         background-color: yellow;
     }
+
+    .resize {
+        height: 300px;
+        width: 300px;
+    }
+
+    .changing-shape {
+        border-radius: 15%;
+    }
 }
 
 @media (min-width: 992px) {
     body {
         background-color: green;
+    }
+
+    .resize {
+        height: 400px;
+        width: 400px;
+    }
+
+
+    .changing-shape {
+        border-radius: 25%;
     }
 }
 
@@ -30,10 +77,28 @@ h1 {
     body {
         background-color: purple;
     }
+
+    .resize {
+        height: 500px;
+        width: 500px;
+    }
+
+    .changing-shape {
+        border-radius: 35%;
+    }
 }
 
 @media (min-width: 1400px) {
     body {
         background-color: orange;
+    }
+
+    .resize {
+        height: 600px;
+        width: 600px;
+    }
+
+    .changing-shape {
+        border-radius: 50%;
     }
 }
