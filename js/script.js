@@ -99,4 +99,3 @@ console.log(values); // [Math.PI, false, 'peggy']
 values.forEach(v => console.log(v));
 console.log([1, 2] === [1,2]); // false
 console.log([1,2].toString() === [1, 2].toString()); // true
-
