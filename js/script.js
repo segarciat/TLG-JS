@@ -53,6 +53,8 @@ console.log(!isSunny);
 console.log(isDayOfWeek === isRaining);
 console.log("5" == 5); // true, equal in value and data type
 console.log("5" === 5); // false, distinct data types
+console.log("hello" < "hello world"); // true, lexical comparison
+console.log("vlad" > "sergio"); // true, lexical comparison
 
 
 // Math object
