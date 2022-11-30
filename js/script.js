@@ -35,6 +35,13 @@ console.log("Hello, world".substring(5, 11)); // , worl
 console.log("Hello, world".substring(1)); // ello, world
 console.log("Hello, world".slice(1)); // ello, world
 console.log("Hello, world".slice(5, 11)); // , worl
+var secretNumber = 10;
+console.log(typeof 10); // number
+// var willCauseError = 10.toString();
+secretNumber = secretNumber.toString(); // "10" as a string
+console.log(typeof secretNumber); // string
+secretNumber = 10 + "";
+console.log(typeof secretNumber); // string
 
 // Boolean operations
 let isDayOfWeek = true;
@@ -90,3 +97,4 @@ console.log(values); // [Math.PI, false, 'peggy']
 values.forEach(v => console.log(v));
 console.log([1, 2] === [1,2]); // false
 console.log([1,2].toString() === [1, 2].toString()); // true
+
