@@ -1,13 +1,17 @@
 function difference(x, y) {
+    if (isNaN(x) || isNaN(y))
+        return;
     return x - y;
 }
 
 function product (x, y) {
+    if (isNaN(x) || isNaN(y))
+        return;
     return x * y;
 }
 
 function printDay(n) {
-    if (typeof n !== 'number')
+    if (isNaN(n))
         return;
     const DAYS_OF_THE_WEEK = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     if (1 <= n && n <= DAYS_OF_THE_WEEK.length)
@@ -20,6 +24,8 @@ function lastElement(arr) {
 }
 
 function numberCompare(x, y) {
+    if (isNaN(x) || isNaN(y))
+        return;
     if (x > y) {
         return "First is greater"
     } else if (x < y) {
@@ -30,25 +36,24 @@ function numberCompare(x, y) {
 }
 
 function singleLetterCount(word, letter) {
-    if (typeof word !== 'string' || typeof letter !== 'string')
+    if ((typeof word !== 'string' && !(word instanceof String)) || (typeof letter !== 'string' && !(letter instanceof String)))
         return;
-    word = word.toLowerCase();
     letter = letter.toLowerCase();
     var count = 0;
     for (let i = 0; i < word.length; i++)
-        if (word[i] === letter)
+        if (word[i].toLowerCase() === letter)
             count++;
     return count;
 }
 
 function multipleLetterCount(str) {
-    if (typeof str !== 'string')
+    if (typeof str !== 'string' && !(str instanceof String))
         return;
     const frequencies = {};
     for (let i = 0; i < str.length; i++) {
         const letter = str[i];
         if (!frequencies[letter])
-        frequencies[letter] = 0;
+            frequencies[letter] = 0;
         frequencies[letter]++;
     }
     return frequencies;
@@ -79,7 +84,7 @@ function arrayManipulation(arr, command, location, value) {
 }
 
 function isPalindrome(str) {
-    if (typeof str !== 'string')
+    if (typeof str !== 'string' && !(str instanceof String))
         return;
     // remove whitespace and perform as case-insensitive
     str = str.trim().toLowerCase().replace(/\s+/g, "");
