@@ -8,7 +8,8 @@ const CHOICES = [ROCK, PAPER, SCISSORS];
 function getUserChoice() {
   let userChoice;
   while (userChoice !== null && !CHOICES.includes(userChoice)) {
-    userChoice = prompt(`Pick one of the following: ${CHOICES}`);
+    let input = prompt(`Pick one of the following: ${CHOICES}`);
+    userChoice = input && input.trim().toLowerCase();
   }
   return userChoice;
 }
@@ -37,6 +38,7 @@ function determineWinner(first, second) {
 }
 
 function startGame() {
+  // Player always starts from 0 with each match.
   let userScore = 0;
   let aiScore = 0;
   let playAgain = true;
@@ -47,19 +49,22 @@ function startGame() {
     }
     let aiChoice = generateAIChoice();
     let winnerChoice = determineWinner(userChoice, aiChoice);
-    alert(`Human picked ${userChoice}\nComputer picked ${aiChoice}`);
+    let message = `Human picked ${userChoice}\nComputer picked ${aiChoice}`;
     if (!winnerChoice) {
-      alert("It's a tie!");
+      message += "\nIt's a tie!";
     } else if (userChoice === winnerChoice) {
-      alert("You win!");
+      message += "\nYou win!";
       userScore++;
     } else if (aiChoice === winnerChoice) {
-      alert("Computer wins!");
+      message += "\nComputer wins!";
       aiScore++;
     }
-    alert(`Human: ${userScore}\nComputer:${aiScore}`);
+    alert(message);
+    document.getElementById("player-score").textContent = userScore;
+    document.getElementById("ai-score").textContent = aiScore;
+
     playAgain = prompt("Continue? (y/n)") === "y";
   }
   alert("Thanks for playing!");
 }
-startGame();
+document.getElementById("play-btn").onclick = startGame;

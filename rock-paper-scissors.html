@@ -4,16 +4,20 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/rps.css" />
     <title>Rock Paper Scissors</title>
   </head>
   <body>
-    <h1 style="text-align: center">Welcome to Rock, Paper, Scissors</h1>
+    <h1 id="title">Welcome to Rock, Paper, Scissors</h1>
     <img
+      id="rps-image"
       src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Rock-paper-scissors.svg/1200px-Rock-paper-scissors.svg.png"
-      width="400px"
-      style="display: block; margin: 0 auto"
       alt="RockPaperScissors"
     />
+    <button id="play-btn">Play</button>
+    <h3>Match Results</h3>
+    <h3>Player score: <span id="player-score">0</span></h3>
+    <h3>Computer score: <span id="ai-score">0</span></h3>
     <script src="./js/rps.js"></script>
   </body>
 </html>
