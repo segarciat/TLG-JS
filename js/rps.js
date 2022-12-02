@@ -37,19 +37,29 @@ function determineWinner(first, second) {
 }
 
 function startGame() {
-  let userChoice = getUserChoice();
-  if (!userChoice) {
-    alert("Thanks for playing!");
-    return;
+  let userScore = 0;
+  let aiScore = 0;
+  let playAgain = true;
+  while (playAgain) {
+    let userChoice = getUserChoice();
+    if (!userChoice) {
+      return;
+    }
+    let aiChoice = generateAIChoice();
+    let winnerChoice = determineWinner(userChoice, aiChoice);
+    alert(`Human picked ${userChoice}\nComputer picked ${aiChoice}`);
+    if (!winnerChoice) {
+      alert("It's a tie!");
+    } else if (userChoice === winnerChoice) {
+      alert("You win!");
+      userScore++;
+    } else if (aiChoice === winnerChoice) {
+      alert("Computer wins!");
+      aiScore++;
+    }
+    alert(`Human: ${userScore}\nComputer:${aiScore}`);
+    playAgain = prompt("Continue? (y/n)") === "y";
   }
-  let aiChoice = generateAIChoice();
-  let winnerChoice = determineWinner(userChoice, aiChoice);
-  if (!winnerChoice) {
-    alert("It's a tie!");
-  } else if (userChoice === winnerChoice) {
-    alert("You win!");
-  } else if (aiChoice === winnerChoice) {
-    alert("Computer wins!");
-  }
+  alert("Thanks for playing!");
 }
 startGame();
