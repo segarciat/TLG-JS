@@ -1,5 +1,8 @@
-{
-  /* <div class="col-lg-3 col-md-4 col-sm-6">
+// Decide on max length for title and for description.
+function addCard() {
+  const cardCol = document.createElement("div");
+  cardCol.classList = "col-lg-3 col-md-4 col-sm-6";
+  cardCol.innerHTML = `
   <div class="card">
     <img src="https://via.placeholder.com/150" class="card-img-top" alt="..." />
     <div class="card-body">
@@ -27,5 +30,8 @@
       </button>
     </div>
   </div>
-</div>; */
+  `;
+  const cardContainer = document.getElementById("card-container");
+  cardContainer.append(cardCol);
 }
+addCard();
