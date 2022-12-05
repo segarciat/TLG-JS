@@ -11,6 +11,12 @@ deleteModalForm.addEventListener("submit", handleConfirmDelete);
 
 window.addEventListener("load", populateUI);
 
+// Load from data from localStorage and display in UI.
+function populateUI() {
+  const data = loadDataFromDB();
+  data.forEach((cardData) => addNewCardToUI(cardData));
+}
+
 // When add form is submitted, it updates the UI with the given data, and saves that data.
 function handleAddFormSubmit(e) {
   e.preventDefault();
@@ -20,25 +26,25 @@ function handleAddFormSubmit(e) {
     description: addForm.description.value,
     imageUrl: addForm.imageUrl.value,
   };
-  addNewCardToUI(cardData);
-  saveCardData(cardData);
-  addForm.reset(); // clear form fields.
-
+  // See if adding or updating.
+  const currentCardTitle = addForm.getAttribute(CARD_PROJECT_DATA_KEY);
+  if (currentCardTitle) {
+    updateCardFromUI(title, cardData);
+    updateCardFromDB(title, cardData);
+  } else {
+    addNewCardToUI(cardData);
+    saveCardData(cardData);
+    addForm.reset(); // clear form fields.
+  }
   // Close the modal.
   document.getElementById("closeModalBtn").click();
 }
 
 // Save data to local storage.
 function saveCardData(cardData) {
-  const data = JSON.parse(localStorage.getItem(CARD_PROJECT_DATA_KEY)) || [];
+  const data = loadDataFromDB();
   data.push(cardData);
   localStorage.setItem(CARD_PROJECT_DATA_KEY, JSON.stringify(data));
-}
-
-// Load from data from localStorage and display in UI.
-function populateUI() {
-  const data = JSON.parse(localStorage.getItem(CARD_PROJECT_DATA_KEY)) || [];
-  data.forEach((cardData) => addNewCardToUI(cardData));
 }
 
 // Decide on max length for title and for description.
@@ -82,6 +88,11 @@ function addNewCardToUI({ title, description, imageUrl }) {
   deleteBtn.setAttribute(CARD_TITLE_ATTRIBUTE, title);
   deleteBtn.addEventListener("click", handleDeleteClick);
 
+  // Enable update functionality
+  const updateBtn = cardCol.querySelector('[data-bs-target="#addModal"]');
+  updateBtn.setAttribute(CARD_TITLE_ATTRIBUTE, title);
+  updateBtn.addEventListener("click", handleUpdateClick);
+
   // Add to UI.
   cardContainer.append(cardCol);
 }
@@ -90,6 +101,11 @@ function addNewCardToUI({ title, description, imageUrl }) {
 function handleDeleteClick(e) {
   const title = e.target.getAttribute(CARD_TITLE_ATTRIBUTE);
   deleteModalForm.setAttribute(CARD_TITLE_ATTRIBUTE, title);
+}
+
+function handleUpdateClick(e) {
+  const title = e.target.getAttribute(CARD_TITLE_ATTRIBUTE);
+  addForm.setAttribute(CARD_TITLE_ATTRIBUTE, title);
 }
 
 function handleConfirmDelete(e) {
@@ -101,9 +117,13 @@ function handleConfirmDelete(e) {
   document.getElementById("cancelModalBtn").click(); // hide modal.
 }
 
+function loadDataFromDB() {
+  return JSON.parse(localStorage.getItem(CARD_PROJECT_DATA_KEY)) || [];
+}
+
 function deleteCardFromDB(title) {
   // Load from LS.
-  let data = JSON.parse(localStorage.getItem(CARD_PROJECT_DATA_KEY)) || [];
+  let data = loadDataFromDB();
 
   // Remove the element.
   data = data.filter((cardData) => cardData.title !== title);
@@ -116,3 +136,12 @@ function deleteCardFromUI(title) {
   const btn = document.querySelector(`[${CARD_TITLE_ATTRIBUTE}="${title}"]`);
   btn.closest(".card").parentElement.remove(); // remove col which is parent of card.
 }
+
+function updateCardFromDB(title, updatedCardData) {
+  let data = loadDataFromDB();
+  const indexOfCardToUpdate = data.findIndex((card) => card.title === title);
+  data[indexOfCardToUpdate] = updatedCardData;
+  localStorage.setItem(CARD_PROJECT_DATA_KEY, JSON.stringify(data));
+}
+
+function updateCardFromUI(title, updatedCardData) {}
