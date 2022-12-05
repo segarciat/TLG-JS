@@ -35,10 +35,26 @@ body {
     color: var(--LIGHT-THEME);
 }
 
-.calculator-container .display {
+.calculator-container .calculator-screen {
     padding: 0.5rem;
-    background-color: var(--DARK-THEME-LIGHTER);
     text-align: right;
+}
+
+#user-input {
+    background-color: var(--DARK-THEME-LIGHTER);
+    border: none;
+    width: 100%;
+    padding: 1rem 0.5rem;
+    color: #fff;
+    font-size: 1.5rem;
+    text-align: right;
+    -moz-appearance: textfield;
+}
+
+#user-input::-webkit-outer-spin-button,
+#user-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .calculator-container .button-container .button-row {
