@@ -95,25 +95,36 @@
               ></button>
             </div>
             <div class="modal-body">
-              <form>
+              <form id="addForm">
                 <div class="mb-3">
                   <label for="imageUrl" class="form-label">Image URL</label>
-                  <input type="url" class="form-control" id="imageUrl" />
+                  <input
+                    type="url"
+                    class="form-control"
+                    id="imageUrl"
+                    required
+                  />
                 </div>
                 <div class="mb-3">
                   <label for="title" class="form-label">Title</label>
-                  <input type="text" class="form-control" id="title" />
+                  <input type="text" class="form-control" id="title" required />
                 </div>
                 <div class="mb-3">
                   <label for="description" class="form-label"
                     >Description</label
                   >
-                  <input type="text" class="form-control" id="description" />
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="description"
+                    required
+                  />
                 </div>
                 <button
                   type="button"
                   class="btn btn-secondary"
                   data-bs-dismiss="modal"
+                  id="closeModalBtn"
                 >
                   Close
                 </button>
@@ -123,41 +134,7 @@
           </div>
         </div>
       </div>
-      <div id="card-container" class="row">
-        <div class="col-lg-3 col-md-4 col-sm-6">
-          <div class="card">
-            <img
-              src="https://media4.giphy.com/media/bMSaGMYM8OvsN2gKb6/giphy.gif"
-              class="card-img-top"
-              alt="..."
-            />
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
-
-              <button
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#addModal"
-                class="btn btn-warning"
-              >
-                Update
-              </button>
-              <button
-                data-bs-toggle="modal"
-                data-bs-target="#deleteModal"
-                type="button"
-                class="btn btn-danger"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div id="cardContainer" class="row"></div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./js/index.js"></script>

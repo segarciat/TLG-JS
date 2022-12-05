@@ -1,15 +1,35 @@
+// Constants
+const addForm = document.getElementById("addForm");
+
+// Set up event listeners.
+addForm.addEventListener("submit", handleAddFormSubmit);
+
+// When add form is submitted, it updates the UI with the given data, and saves that data.
+function handleAddFormSubmit(e) {
+  e.preventDefault();
+  // Get submission fields.
+  const cardData = {
+    title: addForm.title.value,
+    description: addForm.description.value,
+    imageUrl: addForm.imageUrl.value,
+  };
+  addCardToUI(cardData);
+
+  // Close the modal.
+  document.getElementById("closeModalBtn").click();
+}
+
 // Decide on max length for title and for description.
-function addCard() {
+function addCardToUI(cardData) {
   const cardCol = document.createElement("div");
   cardCol.classList = "col-lg-3 col-md-4 col-sm-6";
   cardCol.innerHTML = `
   <div class="card">
-    <img src="https://via.placeholder.com/150" class="card-img-top" alt="..." />
+    <img src="${cardData.imageUrl}" class="card-img-top" alt="..." />
     <div class="card-body">
-      <h5 class="card-title">Card title</h5>
+      <h5 class="card-title">${cardData.title}</h5>
       <p class="card-text">
-        Some quick example text to build on the card title and make up the bulk
-        of the card's content.
+        ${cardData.description}
       </p>
 
       <button
@@ -31,7 +51,6 @@ function addCard() {
     </div>
   </div>
   `;
-  const cardContainer = document.getElementById("card-container");
+  const cardContainer = document.getElementById("cardContainer");
   cardContainer.append(cardCol);
 }
-addCard();
