@@ -1,4 +1,5 @@
 // Constants
+const CARD_PROJECT_DATA_KEY = "card-project-data";
 const addForm = document.getElementById("addForm");
 
 // Set up event listeners.
@@ -14,9 +15,17 @@ function handleAddFormSubmit(e) {
     imageUrl: addForm.imageUrl.value,
   };
   addCardToUI(cardData);
+  saveCardData(cardData);
 
   // Close the modal.
   document.getElementById("closeModalBtn").click();
+}
+
+// Save data to local storage.
+function saveCardData(cardData) {
+  const data = JSON.parse(localStorage.getItem(CARD_PROJECT_DATA_KEY)) || [];
+  data.push(cardData);
+  localStorage.setItem(CARD_PROJECT_DATA_KEY, JSON.stringify(data));
 }
 
 // Decide on max length for title and for description.
