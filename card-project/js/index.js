@@ -22,6 +22,7 @@ function handleAddFormSubmit(e) {
   };
   addNewCardToUI(cardData);
   saveCardData(cardData);
+  addForm.reset(); // clear form fields.
 
   // Close the modal.
   document.getElementById("closeModalBtn").click();
@@ -41,19 +42,16 @@ function populateUI() {
 }
 
 // Decide on max length for title and for description.
-function addNewCardToUI(cardData) {
+function addNewCardToUI({ title, description, imageUrl }) {
+  // Create template element.
   const cardCol = document.createElement("div");
   cardCol.classList = "col-lg-3 col-md-4 col-sm-6";
-  const deleteBtnKeyval = 'data-action="delete"'; // used to target delete button.
   cardCol.innerHTML = `
   <div class="card">
-    <img src="${cardData.imageUrl}" class="card-img-top" alt="..." />
+    <img class="card-img-top" />
     <div class="card-body">
-      <h5 class="card-title">${cardData.title}</h5>
-      <p class="card-text">
-        ${cardData.description}
-      </p>
-
+      <h5 class="card-title"></h5>
+      <p class="card-text"></p>
       <button
         type="button"
         data-bs-toggle="modal"
@@ -64,7 +62,6 @@ function addNewCardToUI(cardData) {
       </button>
       <button
         data-bs-toggle="modal"
-        ${deleteBtnKeyval}
         data-bs-target="#deleteModal"
         type="button"
         class="btn btn-danger"
@@ -74,10 +71,19 @@ function addNewCardToUI(cardData) {
     </div>
   </div>
   `;
-  cardContainer.append(cardCol);
-  const deleteBtn = cardCol.querySelector(`[${deleteBtnKeyval}]`);
-  deleteBtn.setAttribute(CARD_TITLE_ATTRIBUTE, cardData.title);
+  // Add data to each element.
+  cardCol.querySelector(".card-img-top").setAttribute("src", imageUrl);
+  cardCol.querySelector(".card-img-top").setAttribute("alt", title);
+  cardCol.querySelector(".card-title").textContent = title;
+  cardCol.querySelector(".card-text").textContent = description;
+
+  // Enable delete functionality.
+  const deleteBtn = cardCol.querySelector('[data-bs-target="#deleteModal"]');
+  deleteBtn.setAttribute(CARD_TITLE_ATTRIBUTE, title);
   deleteBtn.addEventListener("click", handleDeleteClick);
+
+  // Add to UI.
+  cardContainer.append(cardCol);
 }
 
 // Save title of the card to be deleted on the modal.
