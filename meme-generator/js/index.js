@@ -41,12 +41,16 @@ function addCardToUI(cardData) {
   cardCol.classList = COL_CLASSLIST;
   cardCol.innerHTML = `
   <div class="card text-bg-dark">
-    <div class="card-header">
-    <h5 class="card-title text-center"></h5>
+    <div class="card-header position-relative  text-center">
+      <img class="card-img" style="opacity:0.6"/>
+      <div class="card-img-overlay">
+        <h5 class="card-title"></h5>
+        <div class="card-body position-absolute bottom-0 w-100">
+          <p class="card-text"></p>
+        </div>
+      </div>
     </div>
-    <img class="card-img-top"/>
-    <div class="card-body">
-      <p class="card-text"></p>
+    <div class="card-footer">
       <button type="button" class="btn btn-danger">
         Delete
       </button>
@@ -54,8 +58,8 @@ function addCardToUI(cardData) {
   </div>`;
 
   // Add data to the image, title, and description.
-  cardCol.querySelector(".card-img-top").setAttribute("src", cardData.memeURL);
-  cardCol.querySelector(".card-img-top").setAttribute("alt", cardData.title);
+  cardCol.querySelector(".card-img").setAttribute("src", cardData.memeURL);
+  cardCol.querySelector(".card-img").setAttribute("alt", cardData.title);
 
   cardCol.querySelector(".card-title").textContent = cardData.title;
   cardCol.querySelector(".card-text").textContent = cardData.description;
