@@ -5,6 +5,7 @@ const BACKSPACE_KEY = "backspace";
 const DELETE_KEY = "delete";
 const ENTER_KEY = "enter";
 const CLEAR_KEY = "clear";
+const ERROR_VAL = "ERROR";
 const VALID_OPS = "+-*/%".split("");
 
 calcContainer.addEventListener("keydown", processKeydown);
@@ -23,12 +24,24 @@ function processKeydown(e) {
 }
 
 function updateCalcInput(key) {
+  if (calcInput.value === ERROR_VAL) calcInput.value = "";
   key = key.toLowerCase();
   if (!isNaN(key) || VALID_OPS.includes(key)) {
     calcInput.value += key;
   } else if (calcInput.value && (key === BACKSPACE_KEY || key === DELETE_KEY)) {
     calcInput.value = calcInput.value.slice(0, calcInput.value.length - 1);
-  } else if (key === ENTER_KEY) {
-    console.log(calcInput.value);
+  } else if (key === CLEAR_KEY) {
+    calcInput.value = "";
+  } else if (calcInput.value && key === ENTER_KEY) {
+    evaluateInput();
+  }
+}
+
+function evaluateInput() {
+  try {
+    const result = eval(calcInput.value);
+    calcInput.value = result;
+  } catch (e) {
+    calcInput.value = ERROR_VAL;
   }
 }
