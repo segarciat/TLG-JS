@@ -3,7 +3,8 @@
  */
 const CARD_DATA_KEY = "card-data";
 const CARD_TITLE_ATTRIBUTE = "data-meme-title";
-const COL_CLASSLIST = "col-lg-3 col-md-4 col-sm-6 my-2";
+const COL_CLASSLIST =
+  "col-lg-3 col-md-4 col-sm-6 my-2 d-flex justify-content-center";
 
 const addForm = document.querySelector("#addMemeModal form");
 const noMemeText = document.getElementById("noMemeText");
@@ -43,10 +44,12 @@ function addCardToUI(cardData) {
   cardCol.innerHTML = `
   <div class="card text-bg-dark">
     <div class="card-header position-relative  text-center">
-      <img class="card-img" style="opacity:0.6"/>
+      <div>
+      </div>
+      <img class="card-img" style="opacity:0.6; height: 300px;"/>
       <div class="card-img-overlay">
-        <h5 class="card-title"></h5>
-        <div class="card-body position-absolute bottom-0 w-100">
+        <div style="height: 100%" class="d-flex flex-column justify-content-between px-2">
+          <h5 class="card-title"></h5>
           <p class="card-text"></p>
         </div>
       </div>
