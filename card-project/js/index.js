@@ -4,6 +4,11 @@ const CARD_ID_ATTRIBUTE = "data-card-id"; // to know which card to delete.
 const addForm = document.getElementById("addForm");
 const deleteModalForm = document.querySelector("#deleteModal form");
 const addNewCardBtn = document.getElementById("newCardBtn");
+const SUCCESS_ALERT = "success";
+const DANGER_ALERT = "danger";
+const INFO_ALERT = "info";
+const ALERT_DURATION = 3000;
+let alertTimeoutID;
 
 // Set up event listeners.
 addForm.addEventListener("submit", handleAddFormSubmit);
@@ -42,11 +47,13 @@ function handleAddFormSubmit(e) {
     cardData.id = currentCardID;
     updateCardFromUI(cardData);
     updateCardFromDB(cardData);
+    displayAlert("Card updated!", INFO_ALERT);
   } else {
     // Generate new ID.
     cardData.id = generateId();
     addNewCardToUI(cardData);
     addNewCardToDB(cardData);
+    displayAlert("Card added!", SUCCESS_ALERT);
   }
   // Clear form fields.
   addForm.reset();
@@ -62,6 +69,7 @@ function handleConfirmDelete(e) {
   deleteModalForm.removeAttribute(CARD_ID_ATTRIBUTE);
   deleteCardFromUI(id);
   document.getElementById("cancelModalBtn").click(); // hide modal.
+  displayAlert("Card successfully deleted!", DANGER_ALERT);
 }
 
 // Save title of the card to be deleted on the modal.
@@ -187,4 +195,19 @@ function updateCardFromDB(updatedCard) {
  */
 function generateId() {
   return Date.now();
+}
+
+function displayAlert(message, type) {
+  const alertPlaceholder = document.getElementById("alertPlaceholder");
+  alertPlaceholder.innerHTML = `
+    <div class="alert alert-${type} alert-dismissible" role="alert">
+      <div>${message}</div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>`;
+  clearTimeout(alertTimeoutID);
+  alertTimeoutID = setTimeout(() => {
+    if (alertPlaceholder.firstElementChild) {
+      alertPlaceholder.firstElementChild.remove();
+    }
+  }, ALERT_DURATION);
 }
