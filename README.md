@@ -1,6 +1,6 @@
-# vr21
+# vr21 - Sergio
 
-Welcome to my VR21 project folder! Feel free to look around:
+I'm [Sergio](https://www.linkedin.com/in/sergio-garcia-tapia/). Welcome to my VR21 project folder! Feel free to look around:
 
 - [Card Project](https://segarciat.github.io/VR21/card-project/)
 - [Meme Generator](https://segarciat.github.io/VR21/meme-generator/)
