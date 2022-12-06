@@ -215,7 +215,7 @@ footer .social-links li a:hover{
 }
 
 /* Phone Media query*/
-@media (max-width: 420px) {
+@media (max-width: 720px) {
 
     header {
         position: sticky;
