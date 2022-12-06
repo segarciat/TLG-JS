@@ -102,12 +102,13 @@ function addNewCardToUI(cardData) {
   const cardCol = document.createElement("div");
   cardCol.classList = "col-lg-3 col-md-4 col-sm-6";
   cardCol.innerHTML = `
-  <div class="card">
-    <img class="card-img-top" />
-    <div class="card-body">
+  <div class="card" style="height:500px">
+    <img class="card-img-top border" height="250px" style="object-fit: contain"/>
+    <div class="card-body position-relative">
       <h5 class="card-title"></h5>
       <p class="card-text"></p>
-      <button
+      <div style="position: absolute;bottom:1rem">
+        <button
         type="button"
         data-bs-toggle="modal"
         data-bs-target="#addModal"
@@ -123,6 +124,7 @@ function addNewCardToUI(cardData) {
       >
         Delete
       </button>
+      </div>
     </div>
   </div>
   `;
