@@ -6,6 +6,7 @@ const CARD_TITLE_ATTRIBUTE = "data-meme-title";
 const COL_CLASSLIST = "col-lg-3 col-md-4 col-sm-6 my-2";
 
 const addForm = document.querySelector("#addMemeModal form");
+const noMemeText = document.getElementById("noMemeText");
 
 /**
  * Event listeners
@@ -72,6 +73,7 @@ function addCardToUI(cardData) {
   // Add cardCol to the UI
   const cardContainer = document.getElementById("cardContainer");
   cardContainer.append(cardCol);
+  noMemeText.classList.add("d-none");
 }
 
 function addCardToDB(cardData) {
@@ -99,6 +101,9 @@ function deleteCard(evt) {
   // data = data.filter((cardData) => cardData.id !== idToDelete);
   saveDataToDB(data);
   cardCol.remove();
+  if (data.length === 0) {
+    noMemeText.classList.remove("d-none");
+  }
 }
 
 function saveDataToDB(data) {
