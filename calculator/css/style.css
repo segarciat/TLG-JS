@@ -40,7 +40,7 @@ body {
     text-align: right;
 }
 
-#user-input {
+#calcInput {
     background-color: var(--DARK-THEME-LIGHTER);
     border: none;
     width: 100%;
@@ -51,8 +51,8 @@ body {
     -moz-appearance: textfield;
 }
 
-#user-input::-webkit-outer-spin-button,
-#user-input::-webkit-inner-spin-button {
+#calcInput::-webkit-outer-spin-button,
+#calcInput::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
