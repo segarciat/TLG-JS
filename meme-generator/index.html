@@ -12,7 +12,7 @@
   </head>
   <body>
     <!-- Navbar -->
-    <nav class="navbar bg-light">
+    <nav class="navbar bg-dark navbar-dark">
       <div class="container">
         <a class="navbar-brand">Meme Generator</a>
         <form class="d-flex">
@@ -27,8 +27,6 @@
         </form>
       </div>
     </nav>
-    <!-- Button trigger modal -->
-
     <!-- Modal -->
     <div
       class="modal fade"
@@ -51,32 +49,34 @@
           <div class="modal-body">
             <form>
               <div class="mb-3">
-                <label for="imageUrl" class="form-label">Image URL</label>
+                <label for="memeURL" class="form-label">Meme URL</label>
                 <input
                   type="url"
                   class="form-control"
-                  id="imageUrl"
-                  name="imageUrl"
+                  id="memeURL"
+                  name="memeURL"
                   required
                 />
               </div>
               <div class="mb-3">
-                <label for="topText" class="form-label">Top Text</label>
+                <label for="title" class="form-label">Meme Title</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="topText"
-                  name="topText"
+                  id="title"
+                  name="title"
                   required
                 />
               </div>
               <div class="mb-3">
-                <label for="bottomText" class="form-label">Bottom Text</label>
+                <label for="description" class="form-label"
+                  >Meme Description</label
+                >
                 <input
                   type="text"
                   class="form-control"
-                  id="bottomText"
-                  name="bottomText"
+                  id="description"
+                  name="description"
                   required
                 />
               </div>
@@ -96,7 +96,7 @@
       </div>
     </div>
 
-    <div class="container">
+    <div class="container my-4">
       <div id="cardContainer" class="row"></div>
     </div>
     <!-- Bootstrap JS -->
