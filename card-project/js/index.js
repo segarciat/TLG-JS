@@ -100,14 +100,17 @@ function handleUpdateClick(e) {
 function addNewCardToUI(cardData) {
   // Create template element.
   const cardCol = document.createElement("div");
-  cardCol.classList = "col-lg-3 col-md-4 col-sm-6";
+  cardCol.classList =
+    "col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center";
   cardCol.innerHTML = `
-  <div class="card" style="height:500px">
-    <img class="card-img-top border" height="250px" style="object-fit: contain"/>
-    <div class="card-body position-relative">
-      <h5 class="card-title"></h5>
-      <p class="card-text"></p>
-      <div style="position: absolute;bottom:1rem">
+  <div class="card" style="width: 350px">
+    <img class="card-img-top"/>
+    <div class="card-body d-flex flex-column justify-content-between">
+      <div class="my-1">
+        <h5 class="card-title"></h5>
+        <p class="card-text"></p>
+      </div>
+      <div class="my-1">
         <button
         type="button"
         data-bs-toggle="modal"
