@@ -24,6 +24,7 @@ function populateUI() {
 function handleAddNewCardBtn(e) {
   // Clear modal form ID if there is one.
   addForm.removeAttribute(CARD_ID_ATTRIBUTE);
+  addForm.reset();
 }
 
 // When add form is submitted, it updates the UI with the given data, and saves that data.
@@ -39,8 +40,8 @@ function handleAddFormSubmit(e) {
   const currentCardID = Number(addForm.getAttribute(CARD_ID_ATTRIBUTE));
   if (currentCardID) {
     cardData.id = currentCardID;
-    updateCardFromUI(currentCardID, cardData);
-    updateCardFromDB(currentCardID, cardData);
+    updateCardFromUI(cardData);
+    updateCardFromDB(cardData);
   } else {
     // Generate new ID.
     cardData.id = generateId();
@@ -88,7 +89,7 @@ function handleUpdateClick(e) {
  */
 
 // Decide on max length for title and for description.
-function addNewCardToUI({ title, description, imageUrl, id }) {
+function addNewCardToUI(cardData) {
   // Create template element.
   const cardCol = document.createElement("div");
   cardCol.classList = "col-lg-3 col-md-4 col-sm-6";
@@ -117,25 +118,23 @@ function addNewCardToUI({ title, description, imageUrl, id }) {
     </div>
   </div>
   `;
-  // Add data to each element.
-  cardCol.querySelector(".card-img-top").setAttribute("src", imageUrl);
-  cardCol.querySelector(".card-img-top").setAttribute("alt", title);
-  cardCol.querySelector(".card-title").textContent = title;
-  cardCol.querySelector(".card-text").textContent = description;
+
+  // Add to UI
+  const cardContainer = document.getElementById("cardContainer");
+  cardContainer.append(cardCol);
 
   // Enable delete functionality.
   const deleteBtn = cardCol.querySelector('[data-bs-target="#deleteModal"]');
-  deleteBtn.setAttribute(CARD_ID_ATTRIBUTE, id);
+  deleteBtn.setAttribute(CARD_ID_ATTRIBUTE, cardData.id);
   deleteBtn.addEventListener("click", handleDeleteClick);
 
   // Enable update functionality
   const updateBtn = cardCol.querySelector('[data-bs-target="#addModal"]');
-  updateBtn.setAttribute(CARD_ID_ATTRIBUTE, id);
+  updateBtn.setAttribute(CARD_ID_ATTRIBUTE, cardData.id);
   updateBtn.addEventListener("click", handleUpdateClick);
 
-  // Add to UI.
-  const cardContainer = document.getElementById("cardContainer");
-  cardContainer.append(cardCol);
+  // Add data to each element; needs to happen after button has the ID attribute.
+  updateCardFromUI(cardData);
 }
 
 function deleteCardFromUI(id) {
@@ -143,10 +142,14 @@ function deleteCardFromUI(id) {
   btn.closest(".card").parentElement.remove(); // remove col which is parent of card.
 }
 
-function updateCardFromUI(id, updatedCardData) {
-  const btn = document.querySelector(`button[${CARD_ID_ATTRIBUTE}]`);
+function updateCardFromUI({ imageUrl, title, description, id }) {
+  const btn = document.querySelector(`button[${CARD_ID_ATTRIBUTE}="${id}"]`);
   const card = btn.closest(".card");
-  console.log(card);
+  // Add data to each element.
+  card.querySelector(".card-img-top").setAttribute("src", imageUrl);
+  card.querySelector(".card-img-top").setAttribute("alt", title);
+  card.querySelector(".card-title").textContent = title;
+  card.querySelector(".card-text").textContent = description;
 }
 
 /**
@@ -172,10 +175,10 @@ function deleteCardFromDB(id) {
   saveToDB(data);
 }
 
-function updateCardFromDB(id, updatedCardData) {
+function updateCardFromDB(updatedCard) {
   let data = loadDataFromDB();
-  const indexOfCardToUpdate = data.findIndex((card) => card.id === id);
-  data[indexOfCardToUpdate] = updatedCardData;
+  const updateIndex = data.findIndex((card) => card.id === updatedCard.id);
+  data[updateIndex] = updatedCard;
   saveToDB(data);
 }
 
