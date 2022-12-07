@@ -1,9 +1,13 @@
 // Constants
 const CARD_PROJECT_DATA_KEY = "card-project-data"; // local storage data key.
 const CARD_ID_ATTRIBUTE = "data-card-id"; // to know which card to delete.
-const addForm = document.getElementById("addForm");
+
+// HTML elements.
+const cardForm = document.getElementById("cardForm");
 const deleteModalForm = document.querySelector("#deleteModal form");
 const addNewCardBtn = document.getElementById("newCardBtn");
+
+// Alert variables.
 const SUCCESS_ALERT = "success";
 const DANGER_ALERT = "danger";
 const INFO_ALERT = "info";
@@ -11,10 +15,9 @@ const ALERT_DURATION = 3000;
 let alertTimeoutID;
 
 // Set up event listeners.
-addForm.addEventListener("submit", handleAddFormSubmit);
+cardForm.addEventListener("submit", handleCardFormSubmit);
 deleteModalForm.addEventListener("submit", handleConfirmDelete);
 addNewCardBtn.addEventListener("click", handleAddNewCardBtn);
-
 window.addEventListener("load", populateUI);
 
 /**
@@ -28,21 +31,21 @@ function populateUI() {
 
 function handleAddNewCardBtn(e) {
   // Clear modal form ID if there is one.
-  addForm.removeAttribute(CARD_ID_ATTRIBUTE);
-  addForm.reset();
+  cardForm.removeAttribute(CARD_ID_ATTRIBUTE);
+  cardForm.reset();
 }
 
 // When add form is submitted, it updates the UI with the given data, and saves that data.
-function handleAddFormSubmit(e) {
+function handleCardFormSubmit(e) {
   e.preventDefault();
   // Get submission fields.
   const cardData = {
-    title: addForm.title.value,
-    description: addForm.description.value,
-    imageUrl: addForm.imageUrl.value,
+    title: cardForm.title.value,
+    description: cardForm.description.value,
+    imageUrl: cardForm.imageUrl.value,
   };
   // See if adding or updating.
-  const currentCardID = Number(addForm.getAttribute(CARD_ID_ATTRIBUTE));
+  const currentCardID = Number(cardForm.getAttribute(CARD_ID_ATTRIBUTE));
   if (currentCardID) {
     cardData.id = currentCardID;
     updateCardFromUI(cardData);
@@ -56,7 +59,7 @@ function handleAddFormSubmit(e) {
     displayAlert("Card added!", SUCCESS_ALERT);
   }
   // Clear form fields.
-  addForm.reset();
+  cardForm.reset();
   // Close the modal.
   document.getElementById("closeModalBtn").click();
 }
@@ -81,15 +84,15 @@ function handleDeleteClick(e) {
 function handleUpdateClick(e) {
   // Set current ID.
   const id = e.target.getAttribute(CARD_ID_ATTRIBUTE);
-  addForm.setAttribute(CARD_ID_ATTRIBUTE, id);
+  cardForm.setAttribute(CARD_ID_ATTRIBUTE, id);
 
   let data = loadDataFromDB();
   const dataToUpdate = data.find((cardData) => cardData.id === Number(id));
 
   // Prepopulate form.
-  addForm.elements.title.value = dataToUpdate.title;
-  addForm.elements.description.value = dataToUpdate.description;
-  addForm.elements.imageUrl.value = dataToUpdate.imageUrl;
+  cardForm.elements.title.value = dataToUpdate.title;
+  cardForm.elements.description.value = dataToUpdate.description;
+  cardForm.elements.imageUrl.value = dataToUpdate.imageUrl;
 }
 
 /**
@@ -114,7 +117,7 @@ function addNewCardToUI(cardData) {
         <button
         type="button"
         data-bs-toggle="modal"
-        data-bs-target="#addModal"
+        data-bs-target="#cardFormModal"
         class="btn btn-warning"
       >
         Update
@@ -142,7 +145,7 @@ function addNewCardToUI(cardData) {
   deleteBtn.addEventListener("click", handleDeleteClick);
 
   // Enable update functionality
-  const updateBtn = cardCol.querySelector('[data-bs-target="#addModal"]');
+  const updateBtn = cardCol.querySelector('[data-bs-target="#cardFormModal"]');
   updateBtn.setAttribute(CARD_ID_ATTRIBUTE, cardData.id);
   updateBtn.addEventListener("click", handleUpdateClick);
 

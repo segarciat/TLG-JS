@@ -42,7 +42,7 @@
           type="button"
           class="btn btn-primary"
           data-bs-toggle="modal"
-          data-bs-target="#addModal"
+          data-bs-target="#cardFormModal"
         >
           Add
         </button>
@@ -79,15 +79,15 @@
     <!-- Modal to add item, shown after clicking the add button on nav -->
     <div
       class="modal fade"
-      id="addModal"
+      id="cardFormModal"
       tabindex="-1"
-      aria-labelledby="addModalLabel"
+      aria-labelledby="cardFormModalLabel"
       aria-hidden="true"
     >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="addModalLabel">Image</h1>
+            <h1 class="modal-title fs-5" id="cardFormModalLabel">Image</h1>
             <button
               type="button"
               class="btn-close"
@@ -96,7 +96,7 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form id="addForm">
+            <form id="cardForm">
               <div class="mb-3">
                 <label for="imageUrl" class="form-label">Image URL</label>
                 <input type="url" class="form-control" id="imageUrl" required />
