@@ -1,10 +1,11 @@
 // Constants
 const CARD_PROJECT_DATA_KEY = "card-project-data"; // local storage data key.
 const CARD_ID_ATTRIBUTE = "data-card-id"; // to know which card to delete.
+const DELETE_MODAL_ID = "deleteModal";
 
 // HTML elements.
 const cardForm = document.getElementById("cardForm");
-const deleteModalForm = document.querySelector("#deleteModal form");
+const deleteModalForm = document.querySelector(`#${DELETE_MODAL_ID} form`);
 const addNewCardBtn = document.getElementById("newCardBtn");
 
 // Alert variables.
@@ -15,22 +16,23 @@ const ALERT_DURATION = 3000;
 let alertTimeoutID;
 
 // Set up event listeners.
+window.addEventListener("load", populateUI);
+addNewCardBtn.addEventListener("click", handleAddNewCardBtn);
 cardForm.addEventListener("submit", handleCardFormSubmit);
 deleteModalForm.addEventListener("submit", handleConfirmDelete);
-addNewCardBtn.addEventListener("click", handleAddNewCardBtn);
-window.addEventListener("load", populateUI);
 
 /**
  * Event Listener functions.
  */
+
 // Load data from DB and fill up UI.
 function populateUI() {
   const data = loadDataFromDB();
   data.forEach((cardData) => addNewCardToUI(cardData));
 }
 
-function handleAddNewCardBtn(e) {
-  // Clear modal form ID if there is one.
+function handleAddNewCardBtn() {
+  // Clear modal form ID and data (from clicking Update button) if there is any.
   cardForm.removeAttribute(CARD_ID_ATTRIBUTE);
   cardForm.reset();
 }
@@ -75,26 +77,6 @@ function handleConfirmDelete(e) {
   displayAlert("Card successfully deleted!", DANGER_ALERT);
 }
 
-// Save title of the card to be deleted on the modal.
-function handleDeleteClick(e) {
-  const id = Number(e.target.getAttribute(CARD_ID_ATTRIBUTE));
-  deleteModalForm.setAttribute(CARD_ID_ATTRIBUTE, id);
-}
-
-function handleUpdateClick(e) {
-  // Set current ID.
-  const id = e.target.getAttribute(CARD_ID_ATTRIBUTE);
-  cardForm.setAttribute(CARD_ID_ATTRIBUTE, id);
-
-  let data = loadDataFromDB();
-  const dataToUpdate = data.find((cardData) => cardData.id === Number(id));
-
-  // Prepopulate form.
-  cardForm.elements.title.value = dataToUpdate.title;
-  cardForm.elements.description.value = dataToUpdate.description;
-  cardForm.elements.imageUrl.value = dataToUpdate.imageUrl;
-}
-
 /**
  * UI functions
  */
@@ -102,10 +84,9 @@ function handleUpdateClick(e) {
 // Decide on max length for title and for description.
 function addNewCardToUI(cardData) {
   // Create template element.
-  const cardCol = document.createElement("div");
-  cardCol.classList =
-    "col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center";
-  cardCol.innerHTML = `
+  const col = document.createElement("div");
+  col.classList = "col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center";
+  col.innerHTML = `
   <div class="card" style="width: 350px">
     <img class="card-img-top"/>
     <div class="card-body d-flex flex-column justify-content-between">
@@ -124,7 +105,7 @@ function addNewCardToUI(cardData) {
       </button>
       <button
         data-bs-toggle="modal"
-        data-bs-target="#deleteModal"
+        data-bs-target="#${DELETE_MODAL_ID}"
         type="button"
         class="btn btn-danger"
       >
@@ -135,37 +116,63 @@ function addNewCardToUI(cardData) {
   </div>
   `;
 
-  // Add to UI
-  const cardContainer = document.getElementById("cardContainer");
-  cardContainer.append(cardCol);
-
   // Enable delete functionality.
-  const deleteBtn = cardCol.querySelector('[data-bs-target="#deleteModal"]');
+  const deleteBtn = col.querySelector(`[data-bs-target="#${DELETE_MODAL_ID}"]`);
   deleteBtn.setAttribute(CARD_ID_ATTRIBUTE, cardData.id);
   deleteBtn.addEventListener("click", handleDeleteClick);
 
   // Enable update functionality
-  const updateBtn = cardCol.querySelector('[data-bs-target="#cardFormModal"]');
+  const updateBtn = col.querySelector('[data-bs-target="#cardFormModal"]');
   updateBtn.setAttribute(CARD_ID_ATTRIBUTE, cardData.id);
   updateBtn.addEventListener("click", handleUpdateClick);
+
+  // Add column (with its card data) to UI.
+  document.getElementById("cardContainer").append(col);
 
   // Add data to each element; needs to happen after button has the ID attribute.
   updateCardFromUI(cardData);
 }
 
-function deleteCardFromUI(id) {
-  const btn = document.querySelector(`button[${CARD_ID_ATTRIBUTE}="${id}"]`);
-  btn.closest(".card").parentElement.remove(); // remove col which is parent of card.
+// Save title of the card to be deleted on the modal.
+function handleDeleteClick(e) {
+  const id = Number(e.target.getAttribute(CARD_ID_ATTRIBUTE));
+  deleteModalForm.setAttribute(CARD_ID_ATTRIBUTE, id);
 }
 
-function updateCardFromUI({ imageUrl, title, description, id }) {
-  const btn = document.querySelector(`button[${CARD_ID_ATTRIBUTE}="${id}"]`);
-  const card = btn.closest(".card");
+function handleUpdateClick(e) {
+  // Set current ID.
+  const id = e.target.getAttribute(CARD_ID_ATTRIBUTE);
+  cardForm.setAttribute(CARD_ID_ATTRIBUTE, id);
+
+  // Load data for corresponding card.
+  let data = loadDataFromDB();
+  const dataToUpdate = data.find((cardData) => cardData.id === Number(id));
+
+  // Prepopulate form wth card data.
+  cardForm.elements.title.value = dataToUpdate.title;
+  cardForm.elements.description.value = dataToUpdate.description;
+  cardForm.elements.imageUrl.value = dataToUpdate.imageUrl;
+}
+
+function deleteCardFromUI(id) {
+  const card = getCardByID(id);
+  card.parentElement.remove(); // remove col which is parent of card.
+}
+
+function updateCardFromUI(cardData) {
+  const { imageUrl, title, description, id } = cardData;
+  const card = getCardByID(id);
   // Add data to each element.
   card.querySelector(".card-img-top").setAttribute("src", imageUrl);
   card.querySelector(".card-img-top").setAttribute("alt", title);
   card.querySelector(".card-title").textContent = title;
   card.querySelector(".card-text").textContent = description;
+}
+
+// Get card from UI by using the card data's id.
+function getCardByID(id) {
+  const btn = document.querySelector(`button[${CARD_ID_ATTRIBUTE}="${id}"]`);
+  return btn.closest(".card");
 }
 
 /**
