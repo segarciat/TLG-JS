@@ -1,10 +1,13 @@
-let flipCards = document.querySelectorAll(".flip-card");
-let currentCard;
-let timeOutId;
-flipCards.forEach(function (card) {
-  card.addEventListener("click", makeCardFlip);
-  card.flipped = false;
-});
+// https://upload.wikimedia.org/wikipedia/commons/d/d8/Atlas_deck_card_back_blue_and_brown.svg
+const BACK_CARD_SRC = "./img/back-card.svg";
+
+// let flipCards = document.querySelectorAll(".flip-card");
+// let currentCard;
+// let timeOutId;
+// flipCards.forEach(function (card) {
+//   card.addEventListener("click", makeCardFlip);
+//   card.flipped = false;
+// });
 
 function makeCardFlip(e) {
   let card = e.target.closest(".flip-card");
@@ -47,3 +50,32 @@ function unflipCards(cardOne, cardTwo) {
   timeOutId = null;
   currentCard = null;
 }
+
+function addCardToUI() {
+  const col = document.createElement("div");
+  col.classList = "col-md-3";
+  col.innerHTML = `
+  <div class="flip-card">
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <img
+          src="${BACK_CARD_SRC}"
+          alt="back-card"
+          style="width: 300px; height: 300px"
+        />
+      </div>
+      <div class="flip-card-back">
+        <img
+          src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/cute-baby-animals-1558535060.jpg"
+          alt="Avatar"
+          style="width: 300px; height: 300px"
+        />
+      </div>
+    </div>
+  </div>
+  `;
+
+  document.getElementById("cardContainer").append(col);
+}
+
+addCardToUI();
