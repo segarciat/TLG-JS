@@ -18,6 +18,7 @@ const UNIQUE_IMAGES_SRC = [
 const MAX_CARDS = 16;
 const UNFLIP_DELAY = 2000;
 const FLIP_CARD_CLS = "flip-card";
+const VICTORY_ID = "victoryInfo";
 
 // Possible states card can be in.
 const REVEALED = "revealed";
@@ -143,9 +144,8 @@ function processMismatch(card) {
 function checkVictory() {
   const cards = Array.from(document.querySelectorAll(`.${FLIP_CARD_CLS}`));
   const won = cards.filter((card) => card.state !== MATCHED).length === 0;
-  console;
   if (won) {
-    document.getElementById("victoryInfo").classList.remove("d-none");
+    document.getElementById(VICTORY_ID).classList.remove("d-none");
     const successRate = ((MAX_CARDS / 2 / matchAttempts) * 100).toFixed(2);
     document.getElementById("score").textContent = successRate;
   }
@@ -153,7 +153,7 @@ function checkVictory() {
 
 function restart() {
   // Hide victory information.
-  document.getElementById("victoryInfo").classList.add("d-none");
+  document.getElementById(VICTORY_ID).classList.add("d-none");
   matchAttempts = 0;
 
   // Remove all cards.
