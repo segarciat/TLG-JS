@@ -16,6 +16,7 @@ const FLIP_ANIMATION_DURATION = 2000;
 
 // Global state
 let currentCard;
+let timeoutId;
 
 function addAllCardsToUI() {
   // Picked half of MAX_CARDS src strings.
@@ -57,12 +58,11 @@ function addCardToUI(src) {
 
 function handleCardClick(e) {
   const card = e.target.closest(".flip-card");
-  if (card.revealed) {
+  if (card.revealed || timeoutId) {
     return; // ignore the click.
   }
   // Reveal the card
   animateFlip(card);
-  card.revealed = true;
 
   // Check if a card has already been revealed.
   if (!currentCard) {
@@ -73,7 +73,7 @@ function handleCardClick(e) {
     currentCard = null;
   } else {
     // Set to flip after a short time
-    let timeoutId = setTimeout(() => {
+    timeoutId = setTimeout(() => {
       animateFlip(card);
       animateFlip(currentCard);
       timeoutId = null;
@@ -85,6 +85,17 @@ function handleCardClick(e) {
 function animateFlip(card) {
   const inner = card.querySelector(".flip-card-inner");
   inner.style.transform = card.revealed ? "" : "rotateY(180deg)";
+  card.revealed = !card.revealed;
+}
+
+function checkMatch(cardOne, cardTwo) {
+  let imgLinkOne = cardOne
+    .querySelector(".flip-card-back img")
+    .getAttribute("src");
+  let imgLinkTwo = cardTwo
+    .querySelector(".flip-card-back img")
+    .getAttribute("src");
+  return imgLinkOne === imgLinkTwo;
 }
 
 // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
@@ -101,51 +112,6 @@ function shuffled(array) {
     shuffled[j] = temp;
   }
   return shuffled;
-}
-
-// let currentCard;
-// let timeOutId;
-
-function makeCardFlip(e) {
-  let card = e.target.closest(".flip-card");
-  let inner = card.querySelector(".flip-card-inner");
-  //   The card is already flipped, ignore the click
-  if (card.flipped || timeOutId) {
-    return;
-  } else {
-    inner.style.transform = "rotateY(180deg)";
-    card.flipped = true;
-  }
-  // Check if there is a current card
-  if (!currentCard) {
-    currentCard = card;
-  } else if (checkMatch(currentCard, card)) {
-    // Give player points
-    currentCard = null;
-  } else {
-    timeOutId = setTimeout(() => unflipCards(card, currentCard), 3000);
-    card.flipped = false;
-    currentCard.flipped = false;
-  }
-}
-
-function checkMatch(cardOne, cardTwo) {
-  let imgLinkOne = cardOne
-    .querySelector(".flip-card-back img")
-    .getAttribute("src");
-  let imgLinkTwo = cardTwo
-    .querySelector(".flip-card-back img")
-    .getAttribute("src");
-  return imgLinkOne === imgLinkTwo;
-}
-
-function unflipCards(cardOne, cardTwo) {
-  let innerOne = cardOne.querySelector(".flip-card-inner");
-  let innerTwo = cardTwo.querySelector(".flip-card-inner");
-  innerOne.style = "";
-  innerTwo.style = "";
-  timeOutId = null;
-  currentCard = null;
 }
 
 addAllCardsToUI();
