@@ -22,7 +22,11 @@ function calcMonthlyPayment(amount, years, rate) {
   const P = amount;
   const n = years * 12; // total number of payments.
   const i = rate / 100 / 12; // yearly interest rate as a decimal
-  return (P * i) / (1 - Math.pow(1 + i, -n));
+  if (rate === 0) {
+    return amount / 12;
+  } else {
+    return (P * i) / (1 - Math.pow(1 + i, -n));
+  }
 }
 
 /** Get form values, calculate, format to 2 decimal places, and display. */

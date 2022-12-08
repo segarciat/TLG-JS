@@ -22,6 +22,7 @@
               <label for="loanAmount" class="form-label">Loan Amount</label>
               <input
                 type="number"
+                min="0"
                 class="form-control"
                 id="loanAmount"
                 name="loanAmount"
@@ -32,6 +33,7 @@
               <label for="termYears" class="form-label">Term in Years</label>
               <input
                 type="number"
+                min="1"
                 class="form-control"
                 id="termYears"
                 name="termYears"
@@ -42,6 +44,7 @@
               <label for="yearlyRate" class="form-label">Yearly Rate</label>
               <input
                 type="number"
+                min="0"
                 step=".01"
                 class="form-control"
                 id="yearlyRate"
