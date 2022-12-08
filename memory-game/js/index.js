@@ -12,6 +12,10 @@ const UNIQUE_IMAGES_SRC = [
   "https://i.giphy.com/media/jOywF6yzPBJ2D9KK1x/giphy.webp",
   "https://i.giphy.com/media/VbtUysLNF86UaOwxKm/giphy.webp",
 ];
+const FLIP_ANIMATION_DURATION = 2000;
+
+// Global state
+let currentCard;
 
 function addAllCardsToUI() {
   // Picked half of MAX_CARDS src strings.
@@ -56,8 +60,26 @@ function handleCardClick(e) {
   if (card.revealed) {
     return; // ignore the click.
   }
+  // Reveal the card
   animateFlip(card);
   card.revealed = true;
+
+  // Check if a card has already been revealed.
+  if (!currentCard) {
+    currentCard = card;
+  } else if (checkMatch(card, currentCard)) {
+    card.removeEventListener("click", handleCardClick);
+    currentCard.removeEventListener("click", handleCardClick);
+    currentCard = null;
+  } else {
+    // Set to flip after a short time
+    let timeoutId = setTimeout(() => {
+      animateFlip(card);
+      animateFlip(currentCard);
+      timeoutId = null;
+      currentCard = null;
+    }, FLIP_ANIMATION_DURATION);
+  }
 }
 
 function animateFlip(card) {
