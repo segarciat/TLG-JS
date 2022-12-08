@@ -39,18 +39,17 @@ function addAllCardsToUI() {
 
 function addCardToUI(src) {
   const col = document.createElement("div");
-  col.classList = "col-md-3 d-flex justify-content-center p-1";
+  col.classList = "col-3 p-1";
+  col.style.aspectRatio = "1/1"; // Lifesaver property right here.
   col.innerHTML = `
-  <div class="flip-card" style="width: 300px; height: 300px">
+  <div class="flip-card">
     <div class="flip-card-inner">
-      <div class="flip-card-front">
-        <div class="bg-danger" style="width: 300px; height: 300px;">
+      <div class="flip-card-back">
+        <div class="card-back-img bg-danger">
         </div>
       </div>
-      <div class="flip-card-back">
+      <div class="flip-card-front">
         <img
-          style="object-fit:contain; max-height:300px"
-          class="img-fluid"
           src="${src}"
           alt="Matching-card"
         />
@@ -96,8 +95,8 @@ function flip(card) {
  * See if cards have matching URLs.
  */
 function checkMatch(cardOne, cardTwo) {
-  let src1 = cardOne.querySelector(".flip-card-back img").getAttribute("src");
-  let src2 = cardTwo.querySelector(".flip-card-back img").getAttribute("src");
+  let src1 = cardOne.querySelector(".flip-card-front img").getAttribute("src");
+  let src2 = cardTwo.querySelector(".flip-card-front img").getAttribute("src");
   return src1 === src2;
 }
 
