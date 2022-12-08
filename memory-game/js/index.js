@@ -1,10 +1,10 @@
 "use strict";
-// https://upload.wikimedia.org/wikipedia/commons/d/d8/Atlas_deck_card_back_blue_and_brown.svg
 
 /**
  * Global constants.
  */
-const BACK_CARD_SRC = "./img/back-card.svg";
+const BACK_CARD_SRC =
+  "https://upload.wikimedia.org/wikipedia/commons/d/d8/Atlas_deck_card_back_blue_and_brown.svg";
 const UNIQUE_IMAGES_SRC = [
   "https://i.giphy.com/media/bMSaGMYM8OvsN2gKb6/giphy.webp",
   "https://i.giphy.com/media/t3cL1iKETUqlBaQ6YV/giphy.webp",
@@ -39,22 +39,20 @@ function addAllCardsToUI() {
 
 function addCardToUI(src) {
   const col = document.createElement("div");
-  col.classList = "col-md-3";
+  col.classList = "col-md-3 d-flex justify-content-center p-1";
   col.innerHTML = `
-  <div class="flip-card">
+  <div class="flip-card" style="width: 300px; height: 300px">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <img
-          src="${BACK_CARD_SRC}"
-          alt="back-card"
-          style="width: 300px; height: 300px"
-        />
+        <div class="bg-danger" style="width: 300px; height: 300px;">
+        </div>
       </div>
       <div class="flip-card-back">
         <img
+          style="object-fit:contain; max-height:300px"
+          class="img-fluid"
           src="${src}"
           alt="Matching-card"
-          style="width: 300px; height: 300px"
         />
       </div>
     </div>
