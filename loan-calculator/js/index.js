@@ -10,24 +10,27 @@ const resultArea = document.getElementById("monthlyPayments");
 
 function getFormValues() {
   return {
-    amount: amountInput.value,
-    years: yearsInput.value,
-    rate: rateInput.value,
+    amount: Number(amountInput.value),
+    years: Number(yearsInput.value),
+    rate: Number(rateInput.value),
   };
 }
 
 /** Calculate monthly payment and return. */
 
 function calcMonthlyPayment(amount, years, rate) {
-  return 0;
+  const P = amount;
+  const n = years * 12; // total number of payments.
+  const i = rate / 100 / 12; // yearly interest rate as a decimal
+  return (P * i) / (1 - Math.pow(1 + i, -n));
 }
 
 /** Get form values, calculate, format to 2 decimal places, and display. */
 
 function getFormValuesAndDisplayResults(e) {
   e.preventDefault();
-  const values = getFormValues();
-  const monthlyPayments = calcMonthlyPayment(values).toFixed(2);
+  const { amount, years, rate } = getFormValues();
+  const monthlyPayments = calcMonthlyPayment(amount, years, rate).toFixed(2);
   resultArea.textContent = `$${monthlyPayments}`;
 }
 
