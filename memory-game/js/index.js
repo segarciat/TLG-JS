@@ -30,6 +30,11 @@ const MATCHED = "matched";
 let currentCard; // First card clicked.
 let mismatchTimeoutId; // Delayed unflip timeout ID upon mismatch.
 
+window.addEventListener("load", (e) => {
+  addAllCardsToUI();
+  document.getElementById("restartBtn").addEventListener("click", restart);
+});
+
 function addAllCardsToUI() {
   // Picked half of MAX_CARDS src strings.
   const srcs = UNIQUE_IMAGES_SRC.slice(0, MAX_CARDS / 2);
@@ -100,6 +105,17 @@ function checkMatch(cardOne, cardTwo) {
   return src1 === src2;
 }
 
+function handleHiddenCardClick(card) {
+  flip(card); // Reveal card.
+  if (!currentCard) {
+    currentCard = card;
+  } else if (checkMatch(card, currentCard)) {
+    handleMatch(card);
+  } else {
+    mismatchTimeoutId = setTimeout(() => processMismatch(card), UNFLIP_DELAY);
+  }
+}
+
 /**
  * Set card state to MATCHED, disallow further clicks, unset currentCard.
  */
@@ -109,6 +125,7 @@ function handleMatch(card) {
   card.state = MATCHED;
   currentCard.state = MATCHED;
   currentCard = null;
+  checkVictory();
 }
 
 /**
@@ -121,15 +138,26 @@ function processMismatch(card) {
   currentCard = null;
 }
 
-function handleHiddenCardClick(card) {
-  flip(card); // Reveal card.
-  if (!currentCard) {
-    currentCard = card;
-  } else if (checkMatch(card, currentCard)) {
-    handleMatch(card);
-  } else {
-    mismatchTimeoutId = setTimeout(() => processMismatch(card), UNFLIP_DELAY);
+function checkVictory() {
+  const cards = Array.from(document.querySelectorAll(`.${FLIP_CARD_CLS}`));
+  const won = cards.filter((card) => card.state !== MATCHED).length === 0;
+  console;
+  if (won) {
+    document.getElementById("victoryInfo").classList.remove("d-none");
   }
+}
+
+function restart() {
+  // Hide victory information.
+  document.getElementById("victoryInfo").classList.add("d-none");
+
+  // Remove all cards.
+  const cardContainer = document.getElementById("cardContainer");
+  while (cardContainer.firstElementChild)
+    cardContainer.firstElementChild.remove();
+
+  // Add them again
+  addAllCardsToUI();
 }
 
 // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
@@ -147,5 +175,3 @@ function shuffle(array) {
   }
   return shuffled;
 }
-
-addAllCardsToUI();
