@@ -29,6 +29,7 @@ const MATCHED = "matched";
  */
 let currentCard; // First card clicked.
 let mismatchTimeoutId; // Delayed unflip timeout ID upon mismatch.
+let matchAttempts = 0; // Used for scoring.
 
 window.addEventListener("load", (e) => {
   addAllCardsToUI();
@@ -100,6 +101,7 @@ function flip(card) {
  * See if cards have matching URLs.
  */
 function checkMatch(cardOne, cardTwo) {
+  matchAttempts++;
   let src1 = cardOne.querySelector(".flip-card-front img").getAttribute("src");
   let src2 = cardTwo.querySelector(".flip-card-front img").getAttribute("src");
   return src1 === src2;
@@ -144,12 +146,15 @@ function checkVictory() {
   console;
   if (won) {
     document.getElementById("victoryInfo").classList.remove("d-none");
+    const successRate = ((MAX_CARDS / 2 / matchAttempts) * 100).toFixed(2);
+    document.getElementById("score").textContent = successRate;
   }
 }
 
 function restart() {
   // Hide victory information.
   document.getElementById("victoryInfo").classList.add("d-none");
+  matchAttempts = 0;
 
   // Remove all cards.
   const cardContainer = document.getElementById("cardContainer");
