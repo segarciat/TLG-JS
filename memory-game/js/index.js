@@ -20,6 +20,51 @@ function addAllCardsToUI() {
   shuffledSrcs.forEach((src) => addCardToUI(src));
 }
 
+function addCardToUI(src) {
+  const col = document.createElement("div");
+  col.classList = "col-md-3";
+  col.innerHTML = `
+  <div class="flip-card">
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <img
+          src="${BACK_CARD_SRC}"
+          alt="back-card"
+          style="width: 300px; height: 300px"
+        />
+      </div>
+      <div class="flip-card-back">
+        <img
+          src="${src}"
+          alt="Matching-card"
+          style="width: 300px; height: 300px"
+        />
+      </div>
+    </div>
+  </div>
+  `;
+
+  // By default, flip cards are not revealed.
+  const card = col.querySelector(".flip-card");
+  card.revealed = false;
+  card.addEventListener("click", handleCardClick);
+  document.getElementById("cardContainer").append(col);
+}
+
+function handleCardClick(e) {
+  const card = e.target.closest(".flip-card");
+  if (card.revealed) {
+    return; // ignore the click.
+  }
+  animateFlip(card);
+  card.revealed = true;
+}
+
+function animateFlip(card) {
+  const inner = card.querySelector(".flip-card-inner");
+  inner.style.transform = card.revealed ? "" : "rotateY(180deg)";
+}
+
 // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
 /* Randomize array in-place using Durstenfeld shuffle algorithm */
 function shuffled(array) {
@@ -36,13 +81,8 @@ function shuffled(array) {
   return shuffled;
 }
 
-// let flipCards = document.querySelectorAll(".flip-card");
 // let currentCard;
 // let timeOutId;
-// flipCards.forEach(function (card) {
-//   card.addEventListener("click", makeCardFlip);
-//   card.flipped = false;
-// });
 
 function makeCardFlip(e) {
   let card = e.target.closest(".flip-card");
@@ -84,35 +124,6 @@ function unflipCards(cardOne, cardTwo) {
   innerTwo.style = "";
   timeOutId = null;
   currentCard = null;
-}
-
-function addCardToUI(src) {
-  const col = document.createElement("div");
-  col.classList = "col-md-3";
-  col.innerHTML = `
-  <div class="flip-card">
-    <div class="flip-card-inner">
-      <div class="flip-card-front">
-        <img
-          src="${BACK_CARD_SRC}"
-          alt="back-card"
-          style="width: 300px; height: 300px"
-        />
-      </div>
-      <div class="flip-card-back">
-        <img
-          src="${src}"
-          alt="Matching-card"
-          style="width: 300px; height: 300px"
-        />
-      </div>
-    </div>
-  </div>
-  `;
-
-  // By default, flip cards are not revealed.
-  col.document.querySelector(".flip-card").revealed = false;
-  document.getElementById("cardContainer").append(col);
 }
 
 addAllCardsToUI();
