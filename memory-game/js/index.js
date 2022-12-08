@@ -1,5 +1,9 @@
 "use strict";
 // https://upload.wikimedia.org/wikipedia/commons/d/d8/Atlas_deck_card_back_blue_and_brown.svg
+
+/**
+ * Global constants.
+ */
 const BACK_CARD_SRC = "./img/back-card.svg";
 const MAX_CARDS = 16;
 const UNIQUE_IMAGES_SRC = [
@@ -14,9 +18,16 @@ const UNIQUE_IMAGES_SRC = [
 ];
 const FLIP_ANIMATION_DURATION = 2000;
 
-// Global state
-let currentCard;
-let timeoutId;
+// Possible states card can be in.
+const REVEALED = "revealed";
+const HIDDEN = "hidden";
+const MATCHED = "matched";
+
+/**
+ * Global state.
+ */
+let currentCard; // First card clicked.
+let mismatchTimeoutId; // Delayed unflip timeout ID upon mismatch.
 
 function addAllCardsToUI() {
   // Picked half of MAX_CARDS src strings.
@@ -51,41 +62,43 @@ function addCardToUI(src) {
 
   // By default, flip cards are not revealed.
   const card = col.querySelector(".flip-card");
-  card.revealed = false;
+  card.state = HIDDEN;
   card.addEventListener("click", handleCardClick);
   document.getElementById("cardContainer").append(col);
 }
 
 function handleCardClick(e) {
   const card = e.target.closest(".flip-card");
-  if (card.revealed || timeoutId) {
+  if (card.state === REVEALED) {
     return; // ignore the click.
+  } else if (mismatchTimeoutId) {
+    clearTimeout(mismatchTimeoutId);
+    const otherCard = Array.from(document.querySelectorAll(".flip-card")).find(
+      (card) => card.state === REVEALED && card != currentCard
+    );
+    handleMismatch(otherCard);
   }
   // Reveal the card
-  animateFlip(card);
-
+  flip(card);
   // Check if a card has already been revealed.
   if (!currentCard) {
     currentCard = card;
   } else if (checkMatch(card, currentCard)) {
-    card.removeEventListener("click", handleCardClick);
-    currentCard.removeEventListener("click", handleCardClick);
-    currentCard = null;
+    handleMatch(card);
   } else {
     // Set to flip after a short time
-    timeoutId = setTimeout(() => {
-      animateFlip(card);
-      animateFlip(currentCard);
-      timeoutId = null;
-      currentCard = null;
-    }, FLIP_ANIMATION_DURATION);
+    mismatchTimeoutId = setTimeout(
+      () => handleMismatch(card),
+      FLIP_ANIMATION_DURATION
+    );
   }
 }
 
-function animateFlip(card) {
+function flip(card) {
   const inner = card.querySelector(".flip-card-inner");
-  inner.style.transform = card.revealed ? "" : "rotateY(180deg)";
-  card.revealed = !card.revealed;
+  const isRevealed = card.state === REVEALED;
+  inner.style.transform = isRevealed ? "" : "rotateY(180deg)";
+  card.state = isRevealed ? HIDDEN : REVEALED;
 }
 
 function checkMatch(cardOne, cardTwo) {
@@ -98,6 +111,20 @@ function checkMatch(cardOne, cardTwo) {
   return imgLinkOne === imgLinkTwo;
 }
 
+function handleMatch(card) {
+  card.removeEventListener("click", handleCardClick);
+  currentCard.removeEventListener("click", handleCardClick);
+  card.state = MATCHED;
+  currentCard.state = MATCHED;
+  currentCard = null;
+}
+
+function handleMismatch(card) {
+  flip(card);
+  flip(currentCard);
+  mismatchTimeoutId = null;
+  currentCard = null;
+}
 // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
 /* Randomize array in-place using Durstenfeld shuffle algorithm */
 function shuffled(array) {
