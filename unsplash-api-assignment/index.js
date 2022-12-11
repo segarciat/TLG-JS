@@ -93,7 +93,8 @@ function parseResults(query, results) {
       id: item.id,
       title: item.alt_description,
       description: item.description || item.alt_description,
-      url: item.urls.thumb,
+      photoUrl: item.urls.thumb,
+      postUrl: item.links.html,
     })),
   };
 }
@@ -117,30 +118,32 @@ function addCardToUI(image, container) {
   col.classList =
     "column is-full-mobile is-one-quarter-tablet is-flex is-justify-content-center";
   col.innerHTML = `
-    <div class="card is-flex-grow-1" style="max-width: 350px">
-			<div class="card-header">
-				<button class="button is-danger is-inverted is-fullwidth" ${FAVORITE_BTN_ATTRIBUTE}><i class="fa-regular fa-heart"></i></i></button>
-			</div>
-      <div class="card-image">
-				<img
-					class="card-img"
-					width="100%"
-					style="object-fit: cover; aspect-ratio: 1/1"
-					src="${image.url}"
-					alt="${image.title}"
-				/>
-      </div>
-			<div class="is-flex is-flex-direction-column is-justify-space-between">
-				<div class="card-content">
-					<div class="content">
-						<h4>${image.title}</h5>
-						<p>
-						${image.description}
-						</p>
+			<div class="card is-flex-grow-1" style="max-width: 350px">
+				<div class="card-header">
+					<button class="button is-danger is-inverted is-fullwidth" ${FAVORITE_BTN_ATTRIBUTE}><i class="fa-regular fa-heart"></i></i></button>
+				</div>
+				<a class="has-text-black" href="${image.postUrl}" target="_blank" rel="noopener">
+					<div class="card-image">
+						<img
+							class="card-img"
+							width="100%"
+							style="object-fit: cover; aspect-ratio: 1/1"
+							src="${image.photoUrl}"
+							alt="${image.title}"
+						/>
+					</div>
+				</a>
+				<div class="is-flex is-flex-direction-column is-justify-space-between">
+					<div class="card-content">
+						<div class="content">
+							<h4>${image.title}</h5>
+							<p>
+							${image.description}
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>
-    </div>
     `;
   const btn = col.querySelector(`button[${FAVORITE_BTN_ATTRIBUTE}]`);
   btn.addEventListener("click", toggleFavorite);
