@@ -5,17 +5,29 @@ const LS_DATA_KEY = "unsplash-exercise";
 const QUERY_ATTRIBUTE = "data-query";
 const IMAGE_ID_ATTRIBUTE = "data-image-id";
 const FAVORITE_BTN_ATTRIBUTE = "data-favorite-btn";
+const FAVORITES_ID = "favorites";
 
 const searchForm = document.getElementById("searchForm");
+const searchTab = document.getElementById("searchTab");
+const favoritesTab = document.getElementById("favoritesTab");
+const favoritesContainer = document.getElementById(FAVORITES_ID);
+const searchContainer = document.getElementById("searchContainer");
+const resultsContainer = document.getElementById("resultsContainer");
 
 window.addEventListener("load", function () {
   searchForm.addEventListener("submit", handleSubmit);
+  searchTab.addEventListener("click", handleSearchTabClick);
+  favoritesTab.addEventListener("click", handleFavoritesTabClick);
+
   const input = searchForm.elements.searchInput;
 
-  const searches = getDataFromDB().searches;
+  const dbData = getDataFromDB();
   input.value =
-    searches.length === 0 ? "cars" : searches[searches.length - 1].query;
+    dbData.searches.length === 0
+      ? "cars"
+      : dbData.searches[dbData.searches.length - 1].query;
   searchForm.requestSubmit();
+  dbData.favorites.forEach((image) => addCardToUI(image, favoritesContainer));
 });
 
 function handleSubmit(e) {
@@ -34,6 +46,7 @@ function handleSubmit(e) {
     const pastSearch = dbData.searches.splice(index, 1)[0];
     displaySearchResults(pastSearch);
     dbData.searches.push(pastSearch); // Make it most recent search.
+    saveToDB(dbData);
   } else {
     const resource = `https://api.unsplash.com/search/photos?query=${query}&per_page=20&client_id=${CLIENT_ID}`;
     fetch(resource)
@@ -47,9 +60,25 @@ function handleSubmit(e) {
 
         // Save it to the DB.
         dbData.searches.push(newResults);
-        saveResults(dbData);
+        saveToDB(dbData);
       });
   }
+}
+
+function handleSearchTabClick(e) {
+  searchTab.classList.add("is-active");
+  favoritesTab.classList.remove("is-active");
+
+  searchContainer.classList.remove("is-hidden");
+  favoritesContainer.classList.add("is-hidden");
+}
+
+function handleFavoritesTabClick(e) {
+  favoritesTab.classList.add("is-active");
+  searchTab.classList.remove("is-active");
+
+  favoritesContainer.classList.remove("is-hidden");
+  searchContainer.classList.add("is-hidden");
 }
 
 // parse search results from Unsplash.
@@ -61,6 +90,7 @@ function parseResults(query, results) {
       title: item.alt_description,
       description: item.description || item.alt_description,
       url: item.urls.thumb,
+      query,
       isFavorite: false,
     })),
   };
@@ -68,7 +98,6 @@ function parseResults(query, results) {
 
 // Add result images to UI.
 function displaySearchResults(results) {
-  const resultsContainer = document.getElementById("resultsContainer");
   resultsContainer.setAttribute(QUERY_ATTRIBUTE, results.query);
   results.images.forEach((image) => {
     addCardToUI(image, resultsContainer);
@@ -77,11 +106,13 @@ function displaySearchResults(results) {
 
 function addCardToUI(image, container) {
   const col = document.createElement("div");
+  col.setAttribute(IMAGE_ID_ATTRIBUTE, image.id);
+  col.setAttribute(QUERY_ATTRIBUTE, image.query);
   col.classList =
     "column is-full-mobile is-one-quarter-tablet is-flex is-justify-content-center";
   const inverted = image.isFavorite ? "" : "is-inverted";
   col.innerHTML = `
-    <div class="card is-flex-grow-1" style="max-width: 350px" ${IMAGE_ID_ATTRIBUTE}="${image.id}">
+    <div class="card is-flex-grow-1" style="max-width: 350px">
 			<div class="card-header">
 				<button class="button is-danger ${inverted} is-fullwidth" ${FAVORITE_BTN_ATTRIBUTE}><i class="fa-regular fa-heart"></i></i></button>
 			</div>
@@ -112,14 +143,45 @@ function addCardToUI(image, container) {
 }
 
 function toggleFavorite(e) {
-  const imageId = e.target.closest(".card").getAttribute(IMAGE_ID_ATTRIBUTE);
+  // Find the image.
+  const imageId = e.target.closest(".column").getAttribute(IMAGE_ID_ATTRIBUTE);
+  const dbData = getDataFromDB();
+  const index = dbData.favorites.findIndex((image) => image.id === imageId);
+  const query = e.target.closest(".column").getAttribute(QUERY_ATTRIBUTE);
+  const image = dbData.searches
+    .find((search) => search.query === query)
+    .images.find((img) => img.id === imageId);
 
-  e.target.classList.toggle("is-inverted");
+  image.isFavorite = !image.isFavorite;
+
+  if (index === -1) {
+    // Add to favorites.
+    dbData.favorites.push(image);
+    // Add to UI.
+    addCardToUI(image, favoritesContainer);
+
+    // Update button styling in resultsContainer.
+    e.target.closest("button").classList.toggle("is-inverted");
+  } else {
+    // Remove from favorites.
+    dbData.favorites = dbData.favorites.filter((img) => img.id !== imageId);
+    // Remove from UI.
+    const selector = `[${IMAGE_ID_ATTRIBUTE}="${image.id}"]`;
+    favoritesContainer.querySelector(selector).remove();
+    // Update button styling.
+    if (image.query === resultsContainer.getAttribute(QUERY_ATTRIBUTE)) {
+      resultsContainer
+        .querySelector(`${selector} button`)
+        .classList.toggle("is-inverted");
+    }
+  }
+
+  // Update DB.
+  saveToDB(dbData);
 }
 
 // Clear results on the page
 function clearResults() {
-  const resultsContainer = document.getElementById("resultsContainer");
   while (resultsContainer.firstElementChild) {
     resultsContainer.firstElementChild.remove();
   }
@@ -133,6 +195,6 @@ function getDataFromDB() {
 }
 
 // Save new results to local storage
-function saveResults(data) {
+function saveToDB(data) {
   localStorage.setItem(LS_DATA_KEY, JSON.stringify(data));
 }
