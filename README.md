@@ -10,3 +10,4 @@ I'm [Sergio](https://www.linkedin.com/in/sergio-garcia-tapia/). Welcome to my VR
 - [Portfolio](https://segarciat.github.io/VR21/portfolio/)
 - [Rock-Paper-Scissors](https://segarciat.github.io/VR21/rock-paper-scissors/)
 - [Timer](https://segarciat.github.io/VR21/timer/)
+- [Unsplash API Assignment](https://segarciat.github.io/VR21/unsplash-api-assignment/)
