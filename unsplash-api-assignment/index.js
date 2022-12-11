@@ -27,7 +27,10 @@ window.addEventListener("load", function () {
       ? "cars"
       : dbData.searches[dbData.searches.length - 1].query;
   searchForm.requestSubmit();
-  dbData.favorites.forEach((image) => addCardToUI(image, favoritesContainer));
+  dbData.favorites.forEach((image) => {
+    addCardToUI(image, favoritesContainer);
+    toggleFavoriteBtnStyling(favoritesContainer, image.id);
+  });
 });
 
 function handleSubmit(e) {
@@ -83,6 +86,7 @@ function handleFavoritesTabClick(e) {
 
 // parse search results from Unsplash.
 function parseResults(query, results) {
+  console.log(results);
   return {
     query,
     images: results.map((item) => ({
@@ -90,31 +94,32 @@ function parseResults(query, results) {
       title: item.alt_description,
       description: item.description || item.alt_description,
       url: item.urls.thumb,
-      query,
-      isFavorite: false,
     })),
   };
 }
 
 // Add result images to UI.
 function displaySearchResults(results) {
+  const favorites = getDataFromDB().favorites;
   resultsContainer.setAttribute(QUERY_ATTRIBUTE, results.query);
   results.images.forEach((image) => {
     addCardToUI(image, resultsContainer);
+    // See if it's in our favorites already.
+    if (favorites.findIndex((img) => img.id === image.id) !== -1) {
+      toggleFavoriteBtnStyling(resultsContainer, image.id);
+    }
   });
 }
 
 function addCardToUI(image, container) {
   const col = document.createElement("div");
   col.setAttribute(IMAGE_ID_ATTRIBUTE, image.id);
-  col.setAttribute(QUERY_ATTRIBUTE, image.query);
   col.classList =
     "column is-full-mobile is-one-quarter-tablet is-flex is-justify-content-center";
-  const inverted = image.isFavorite ? "" : "is-inverted";
   col.innerHTML = `
     <div class="card is-flex-grow-1" style="max-width: 350px">
 			<div class="card-header">
-				<button class="button is-danger ${inverted} is-fullwidth" ${FAVORITE_BTN_ATTRIBUTE}><i class="fa-regular fa-heart"></i></i></button>
+				<button class="button is-danger is-inverted is-fullwidth" ${FAVORITE_BTN_ATTRIBUTE}><i class="fa-regular fa-heart"></i></i></button>
 			</div>
       <div class="card-image">
 				<img
@@ -143,41 +148,44 @@ function addCardToUI(image, container) {
 }
 
 function toggleFavorite(e) {
-  // Find the image.
-  const imageId = e.target.closest(".column").getAttribute(IMAGE_ID_ATTRIBUTE);
+  // Find index of image in favorites.
+  const col = e.target.closest(".column");
+  const imageId = col.getAttribute(IMAGE_ID_ATTRIBUTE);
   const dbData = getDataFromDB();
   const index = dbData.favorites.findIndex((image) => image.id === imageId);
-  const query = e.target.closest(".column").getAttribute(QUERY_ATTRIBUTE);
-  const image = dbData.searches
-    .find((search) => search.query === query)
-    .images.find((img) => img.id === imageId);
-
-  image.isFavorite = !image.isFavorite;
 
   if (index === -1) {
+    // Not in favorites; add it.
+    const query = resultsContainer.getAttribute(QUERY_ATTRIBUTE);
+
+    // Find image data.
+    const image = dbData.searches
+      .find((search) => search.query === query)
+      .images.find((img) => img.id === imageId);
+
     // Add to favorites.
     dbData.favorites.push(image);
     // Add to UI.
     addCardToUI(image, favoritesContainer);
-
-    // Update button styling in resultsContainer.
-    e.target.closest("button").classList.toggle("is-inverted");
+    toggleFavoriteBtnStyling(favoritesContainer, imageId);
   } else {
     // Remove from favorites.
     dbData.favorites = dbData.favorites.filter((img) => img.id !== imageId);
     // Remove from UI.
-    const selector = `[${IMAGE_ID_ATTRIBUTE}="${image.id}"]`;
+    const selector = `[${IMAGE_ID_ATTRIBUTE}="${imageId}"]`;
     favoritesContainer.querySelector(selector).remove();
     // Update button styling.
-    if (image.query === resultsContainer.getAttribute(QUERY_ATTRIBUTE)) {
-      resultsContainer
-        .querySelector(`${selector} button`)
-        .classList.toggle("is-inverted");
-    }
   }
+  toggleFavoriteBtnStyling(resultsContainer, imageId);
 
   // Update DB.
   saveToDB(dbData);
+}
+
+function toggleFavoriteBtnStyling(container, imageId) {
+  const selector = `[${IMAGE_ID_ATTRIBUTE}="${imageId}"] [${FAVORITE_BTN_ATTRIBUTE}]`;
+  const btn = container.querySelector(selector);
+  if (btn) btn.classList.toggle("is-inverted");
 }
 
 // Clear results on the page
