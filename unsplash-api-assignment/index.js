@@ -72,19 +72,26 @@ function addResultsToUI(images) {
   const resultsContainer = document.getElementById("resultsContainer");
   images.forEach((image) => {
     const col = document.createElement("div");
-    col.classList = "col-lg-3 col-md-4 col-sm-6 d-flex";
+    col.classList =
+      "column is-full-mobile is-one-quarter-tablet is-flex is-justify-content-center";
     col.innerHTML = `
-    <div class="card">
-      <img
-          src="${image.imageUrl}"
-          class="card-img-top"
-          alt="..."
-      />
-      <div class="card-body d-flex flex-column justify-content-between">
-          <h5 class="card-title">${image.title}</h5>
-          <p class="card-text">
-          ${image.description}
-          </p>
+    <div class="card is-flex-grow-1" style="max-width: 350px">
+      <div class="card-image">
+				<img
+					class="card-img"
+					width="100%"
+					style="object-fit: cover; aspect-ratio: 1/1"
+					src="${image.imageUrl}"
+					alt="${image.title}"
+				/>
+      </div>
+      <div class="card-content">
+				<div class="content">
+					<h4>${image.title}</h5>
+					<p>
+					${image.description}
+					</p>
+				</div>
       </div>
     </div>
     `;
