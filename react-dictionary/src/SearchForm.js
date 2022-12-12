@@ -1,15 +1,21 @@
 const SearchForm = ({ handleSubmit }) => {
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="searchWordInput">Search Word</label>
-      <input
-        type="text"
-        name="searchWordInput"
-        id="searchWordInput"
-        placeholder="apple"
-        required
-      />
-      <input type="submit" value="Search" />
+    <form className="py-2" onSubmit={handleSubmit}>
+      <div className="field is-grouped">
+        <div className="control is-expanded">
+          <input
+            className="input"
+            type="text"
+            name="searchWordInput"
+            id="searchWordInput"
+            placeholder="Search..."
+            required
+          />
+        </div>
+        <div className="control">
+          <input className="button" type="submit" value="Search" />
+        </div>
+      </div>
     </form>
   );
 };

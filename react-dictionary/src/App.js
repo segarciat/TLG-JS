@@ -8,37 +8,53 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 function App() {
   const [word, setWord] = useState(null);
 
-  function handleSearchSubmit(e) {
+  async function handleSearchSubmit(e) {
     e.preventDefault();
     // Get the word the user searched for.
     const searchInputValue = e.target.elements.searchWordInput.value;
 
     // Make API request with the word.
-    fetch(`${API_URL}/${searchInputValue}?key=${API_KEY}`)
-      .then((res) => res.json())
-      .then((data) => {
-        const result =
-          data.find((w) => w.meta.id === searchInputValue) || data[0];
-        const wordInfo = {
-          searchTerm: searchInputValue,
-          definition: "Not found",
-        };
-        if (result) {
-          wordInfo.searchTerm = result.meta.id;
-          wordInfo.definition = result.shortdef || result.shortdef[0];
-        }
-        setWord(wordInfo);
-      });
+    try {
+      const res = await fetch(`${API_URL}/${searchInputValue}?key=${API_KEY}`);
+      const data = await res.json();
+      const result =
+        data.find((w) => w.meta.id === searchInputValue) || data[0];
+      const wordInfo = {
+        searchTerm: searchInputValue,
+        definition: "Not found",
+      };
+      if (result) {
+        wordInfo.searchTerm = result.meta.id;
+        wordInfo.definition = result.shortdef || result.shortdef[0];
+      }
+      setWord(wordInfo);
+    } catch (e) {
+      throw new Error(e);
+    }
+
     // Display word in UI for now.
     e.target.reset(); // reset the form.
   }
   return (
     <div className="App">
       <Navbar title="React Dictionary" />
-      <div className="container">
+      <div className="container p-2">
         <SearchForm handleSubmit={handleSearchSubmit} />
-        <h1>Word: {word && word?.searchTerm}</h1>
-        <p>Definition: {word && word.definition}</p>
+        <div className="has-background-danger has-text-centered box my-2">
+          <div className="my-2">
+            <p className="is-size-3 has-text-warning">Word: </p>
+            <p className="has-text-white is-size-5">
+              {word && word?.searchTerm}
+            </p>
+          </div>
+
+          <div className="my-2">
+            <p className="is-size-3 has-text-warning">Definition: </p>
+            <p className="has-text-white is-size-5">
+              {word && word.definition}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
