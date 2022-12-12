@@ -1,10 +1,13 @@
 import Navbar from "./Navbar";
+import SearchForm from "./SearchForm";
 
 function App() {
   return (
     <div className="App">
       <Navbar />
-      <h1>Hello</h1>
+      <div className="container">
+        <SearchForm />
+      </div>
     </div>
   );
 }

@@ -4,13 +4,16 @@ body {
     box-sizing: border-box;
 }
 
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
 nav {
     background: #000;
     color: #fff;
     padding: 0.3rem;
 }
-
-nav .nav-content {
-    max-width: 1400px;
-    margin: 0 auto;
+.container form {
+    margin: 1rem 0;
 }
