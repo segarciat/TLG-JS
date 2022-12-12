@@ -17,7 +17,6 @@ function App() {
     fetch(`${API_URL}/${searchInputValue}?key=${API_KEY}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         const result =
           data.find((w) => w.meta.id === searchInputValue) || data[0];
         const wordInfo = {
@@ -35,10 +34,10 @@ function App() {
   }
   return (
     <div className="App">
-      <Navbar />
+      <Navbar title="React Dictionary" />
       <div className="container">
         <SearchForm handleSubmit={handleSearchSubmit} />
-        <h1>Word: {word && word.searchTerm}</h1>
+        <h1>Word: {word && word?.searchTerm}</h1>
         <p>Definition: {word && word.definition}</p>
       </div>
     </div>

@@ -1,9 +1,9 @@
 import "./index.css";
-const Navbar = () => {
+const Navbar = ({ title }) => {
   return (
     <nav>
       <div className="container">
-        <h2>React Dictionary</h2>{" "}
+        <h2>{title}</h2>
       </div>
     </nav>
   );
