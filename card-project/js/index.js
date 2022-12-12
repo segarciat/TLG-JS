@@ -85,10 +85,11 @@ function handleConfirmDelete(e) {
 function addNewCardToUI(cardData) {
   // Create template element.
   const col = document.createElement("div");
-  col.classList = "col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center";
+  col.classList =
+    "col-lg-3 col-md-4 col-sm-6 my-2 d-flex justify-content-center";
   col.innerHTML = `
   <div class="card" style="width: 350px">
-    <img class="card-img-top"/>
+    <img class="card-img-top" style="object-fit: cover; aspect-ratio: 1/1"/>
     <div class="card-body d-flex flex-column justify-content-between">
       <div class="my-1">
         <h5 class="card-title"></h5>
