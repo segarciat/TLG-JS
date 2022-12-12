@@ -1,5 +1,6 @@
 import Navbar from "./Navbar";
 import SearchForm from "./SearchForm";
+import Definition from "./Definition";
 import { useState } from "react";
 
 const API_URL = "https://www.dictionaryapi.com/api/v3/references/sd4/json";
@@ -40,21 +41,10 @@ function App() {
       <Navbar title="React Dictionary" />
       <div className="container p-2">
         <SearchForm handleSubmit={handleSearchSubmit} />
-        <div className="has-background-danger has-text-centered box my-2">
-          <div className="my-2">
-            <p className="is-size-3 has-text-warning">Word: </p>
-            <p className="has-text-white is-size-5">
-              {word && word?.searchTerm}
-            </p>
-          </div>
-
-          <div className="my-2">
-            <p className="is-size-3 has-text-warning">Definition: </p>
-            <p className="has-text-white is-size-5">
-              {word && word.definition}
-            </p>
-          </div>
-        </div>
+        <Definition
+          term={word && word.searchTerm}
+          definition={word && word.definition}
+        />
       </div>
     </div>
   );
