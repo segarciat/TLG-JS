@@ -45,6 +45,14 @@ function App() {
           term={word && word.searchTerm}
           definition={word && word.definition}
         />
+        <footer>
+          <a
+            className="is-link"
+            href="https://dictionaryapi.com/products/api-school-dictionary"
+          >
+            Powered by Merriam-Webster's School Dictionary API
+          </a>
+        </footer>
       </div>
     </div>
   );
