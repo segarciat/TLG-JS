@@ -86,7 +86,6 @@ function handleFavoritesTabClick(e) {
 
 // parse search results from Unsplash.
 function parseResults(query, results) {
-  console.log(results);
   return {
     query,
     images: results.map((item) => ({
