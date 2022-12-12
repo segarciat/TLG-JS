@@ -1,6 +1,6 @@
-const SearchForm = () => {
+const SearchForm = ({ handleSubmit }) => {
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <label htmlFor="searchWordInput">Search Word</label>
       <input
         type="text"
