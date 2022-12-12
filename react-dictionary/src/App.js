@@ -17,14 +17,20 @@ function App() {
     fetch(`${API_URL}/${searchInputValue}?key=${API_KEY}`)
       .then((res) => res.json())
       .then((data) => {
-        const result = data.find((w) => w.meta.id === searchInputValue);
-        setWord({
+        console.log(data);
+        const result =
+          data.find((w) => w.meta.id === searchInputValue) || data[0];
+        const wordInfo = {
           searchTerm: searchInputValue,
-          definition: result.shortdef[0],
-        });
+          definition: "Not found",
+        };
+        if (result) {
+          wordInfo.searchTerm = result.meta.id;
+          wordInfo.definition = result.shortdef || result.shortdef[0];
+        }
+        setWord(wordInfo);
       });
     // Display word in UI for now.
-    setWord(searchInputValue);
     e.target.reset(); // reset the form.
   }
   return (
