@@ -1,0 +1,6 @@
+#suggestions {
+    box-shadow: 3px 3px 5px #888;
+    max-width: 300px;
+    border-radius: 5px;
+    overflow-y: scroll;
+}

@@ -8,34 +8,41 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 
 function App() {
   const [word, setWord] = useState(null);
+  const [suggestions, setSuggestions] = useState([]);
 
-  async function handleSearchSubmit(e) {
-    e.preventDefault();
+  async function handleSearchSubmit(evt) {
+    evt.preventDefault();
     // Get the word the user searched for.
-    const searchInputValue = e.target.elements.searchWordInput.value;
-
+    const searchTerm = evt.target.elements.searchWordInput.value;
     // Make API request with the word.
     try {
-      const res = await fetch(`${API_URL}/${searchInputValue}?key=${API_KEY}`);
-      const data = await res.json();
-      const result =
-        data.find((w) => w.meta.id === searchInputValue) || data[0];
-      const wordInfo = {
-        searchTerm: searchInputValue,
-        definition: "Not found",
-      };
-      if (result) {
-        wordInfo.searchTerm = result.meta.id;
-        wordInfo.definition = result.shortdef || result.shortdef[0];
-      }
-      setWord(wordInfo);
+      const res = await fetch(`${API_URL}/${searchTerm}?key=${API_KEY}`);
+      const data = await res.json(); // An array.
+      parseTermData(searchTerm, data);
     } catch (e) {
       throw new Error(e);
     }
-
     // Display word in UI for now.
-    e.target.reset(); // reset the form.
+    evt.target.reset(); // reset the form.
   }
+
+  function parseTermData(searchTerm, data) {
+    // No results found at all.
+    const wordInfo = { term: searchTerm, definition: "Not found" };
+    if (!data[0]) {
+      setSuggestions([]); // No results or suggestions at all.
+    } else if (data[0] && !data[0].meta) {
+      setSuggestions(data); // No results, but relevant suggestions.
+    } else {
+      // Results, and relevant suggestions
+      const relevant = data.slice(1) || [];
+      setSuggestions(relevant.map((w) => w.meta.id));
+      wordInfo.term = data[0].meta.id;
+      wordInfo.definition = data[0].shortdef || data[0].shortdef;
+    }
+    setWord(wordInfo);
+  }
+
   return (
     <div className="App">
       <Navbar title="React Dictionary" />
