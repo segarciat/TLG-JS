@@ -1,3 +1,4 @@
+"use strict";
 // Grab HTML elements.
 const startBtn = document.getElementById("start");
 const pauseBtn = document.getElementById("pause");

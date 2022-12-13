@@ -1,3 +1,4 @@
+"use strict";
 const BTN_ATTRIBUTE_KEY = "data-calc-key";
 
 /**

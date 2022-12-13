@@ -1,3 +1,4 @@
+"use strict";
 // Valid game choices
 const ROCK = "rock";
 const PAPER = "paper";

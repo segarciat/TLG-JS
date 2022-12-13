@@ -1,3 +1,4 @@
+"use strict";
 // Constants
 const CARD_PROJECT_DATA_KEY = "card-project-data"; // local storage data key.
 const CARD_ID_ATTRIBUTE = "data-card-id"; // to know which card to delete.
