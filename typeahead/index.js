@@ -1,3 +1,4 @@
+"use strict";
 const arrayOfObjects = [
   { name: "Fox", link: "foxnews.com" },
   { name: "Fandango", link: "fandango.com" },
@@ -59,6 +60,7 @@ function clearSuggestions() {
   }
 }
 
+// source: https://www.freecodecamp.org/news/javascript-debounce-example/
 function debounce(func, timeout = 300) {
   let timer;
   return (...args) => {
