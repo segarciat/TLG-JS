@@ -43,10 +43,13 @@ function showSuggestions(suggestions) {
     ul.innerHTML = `<li>No matching results</li>`;
   } else {
     // Show new suggestions
-    suggestions.forEach((result) => {
+    suggestions.forEach(({ name, link }) => {
       const li = document.createElement("li");
+      const typedSoFar = searchInput.value;
+      const rest = name.slice(typedSoFar.length);
+
       li.innerHTML = `
-        <a href="=${result.link}">${result.name}</a>
+        <a href="=${link}">${typedSoFar}<strong>${rest}</strong></a>
     `;
       ul.append(li);
     });
