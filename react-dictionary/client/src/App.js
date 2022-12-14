@@ -7,8 +7,11 @@ const API_URL = "https://www.dictionaryapi.com/api/v3/references/sd4/json";
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 function App() {
-  const [word, setWord] = useState({ term: "", definitions: [] });
-  const [suggestions, setSuggestions] = useState([]);
+  const [results, setResults] = useState({
+    term: "",
+    matches: [],
+    suggestions: [],
+  });
 
   async function handleSearchSubmit(evt) {
     evt.preventDefault();
@@ -27,19 +30,32 @@ function App() {
   }
 
   function parseTermData(term, data) {
-    let definitions = ["Not found"];
-    // No results found at all.
-    if (!data[0]) {
-      setSuggestions([]); // No results or suggestions at all.
-    } else if (data[0] && !data[0].meta) {
-      setSuggestions(data); // No results, but relevant suggestions.
-    } else {
-      // Results, and relevant suggestions
-      let match = data.find((r) => r.hwi.hw === term || r.meta.id === term);
-      setSuggestions(data.map((r) => r.hwi.hw).filter((r) => r !== term));
-      definitions = match?.shortdef || [];
+    let matches = [];
+    let suggestions = [];
+
+    // Relevant suggestions found, but no results.
+    if (data[0] && !data[0].meta) {
+      suggestions = data;
+    } else if (data[0]) {
+      // Relevant suggestions found, as well as results.
+      data.reduce(
+        (acc, w) => {
+          if (w.meta.id === term || w.meta.id.startsWith(`${term}:`)) {
+            // Exact match or multi-match (verb, adj, and so on).
+            acc.matches.push({ partOfSpeech: w.fl, definitions: w.shortdef });
+          } else {
+            // Suggestions
+            const i = w.meta.id.indexOf(":"); // part of multi-result.
+            acc.suggestions.push(
+              w.meta.id.substring(0, i === -1 ? w.meta.id.length : i)
+            );
+          }
+          return acc;
+        },
+        { matches, suggestions }
+      );
     }
-    setWord({ term, definitions });
+    setResults({ term, matches, suggestions });
   }
 
   return (
@@ -47,11 +63,7 @@ function App() {
       <Navbar title="React Dictionary" />
       <div className="container p-2">
         <SearchForm handleSubmit={handleSearchSubmit} />
-        <Definition
-          term={word.term}
-          definitions={word.definitions}
-          suggestions={suggestions}
-        />
+        <Definition {...results} />
         <footer>
           <a
             className="is-link"
