@@ -7,7 +7,7 @@ const API_URL = "https://www.dictionaryapi.com/api/v3/references/sd4/json";
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 function App() {
-  const [word, setWord] = useState(null);
+  const [word, setWord] = useState({ term: "", definitions: [] });
   const [suggestions, setSuggestions] = useState([]);
 
   async function handleSearchSubmit(evt) {
@@ -26,21 +26,20 @@ function App() {
     evt.target.reset(); // reset the form.
   }
 
-  function parseTermData(searchTerm, data) {
+  function parseTermData(term, data) {
+    let definitions = ["Not found"];
     // No results found at all.
-    const wordInfo = { term: searchTerm, definition: "Not found" };
     if (!data[0]) {
       setSuggestions([]); // No results or suggestions at all.
     } else if (data[0] && !data[0].meta) {
       setSuggestions(data); // No results, but relevant suggestions.
     } else {
       // Results, and relevant suggestions
-      const relevant = data.slice(1) || [];
-      setSuggestions(relevant.map((w) => w.meta.id));
-      wordInfo.term = data[0].meta.id;
-      wordInfo.definition = data[0].shortdef || data[0].shortdef;
+      let match = data.find((r) => r.hwi.hw === term || r.meta.id === term);
+      setSuggestions(data.map((r) => r.hwi.hw).filter((r) => r !== term));
+      definitions = match?.shortdef || [];
     }
-    setWord(wordInfo);
+    setWord({ term, definitions });
   }
 
   return (
@@ -49,8 +48,9 @@ function App() {
       <div className="container p-2">
         <SearchForm handleSubmit={handleSearchSubmit} />
         <Definition
-          term={word && word.searchTerm}
-          definition={word && word.definition}
+          term={word.term}
+          definitions={word.definitions}
+          suggestions={suggestions}
         />
         <footer>
           <a
