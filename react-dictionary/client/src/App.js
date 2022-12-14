@@ -1,6 +1,6 @@
 import Navbar from "./Navbar";
 import SearchForm from "./SearchForm";
-import Definition from "./Definition";
+import SearchResults from "./SearchResults";
 import { useState } from "react";
 
 const API_URL = "https://www.dictionaryapi.com/api/v3/references/sd4/json";
@@ -37,16 +37,20 @@ function App() {
     if (data[0] && !data[0].meta) {
       suggestions = data;
     } else if (data[0]) {
+      console.log(data);
       // Relevant suggestions found, as well as results.
       data.reduce(
         (acc, w) => {
           if (w.meta.id === term || w.meta.id.startsWith(`${term}:`)) {
             // Exact match or multi-match (verb, adj, and so on).
-            acc.matches.push({ partOfSpeech: w.fl, definitions: w.shortdef });
+            const { fl: partOfSpeech, shortdef: definitions, meta } = w;
+            const match = matches.find((m) => m.partOfSpeech === w.fl);
+            if (match) match.definitions.push(...definitions);
+            else matches.push({ partOfSpeech, definitions, id: meta.uuid });
           } else {
             // Suggestions
             const i = w.meta.id.indexOf(":"); // part of multi-result.
-            acc.suggestions.push(
+            suggestions.push(
               w.meta.id.substring(0, i === -1 ? w.meta.id.length : i)
             );
           }
@@ -63,7 +67,7 @@ function App() {
       <Navbar title="React Dictionary" />
       <div className="container p-2">
         <SearchForm handleSubmit={handleSearchSubmit} />
-        <Definition {...results} />
+        <SearchResults {...results} />
         <footer>
           <a
             className="is-link"
