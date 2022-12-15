@@ -9,55 +9,43 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 function App() {
   const [results, setResults] = useState({
     term: "",
-    matches: [],
+    matches: {},
     suggestions: [],
   });
 
   async function handleSearchSubmit(evt) {
     evt.preventDefault();
-    // Get the word the user searched for.
     const searchTerm = evt.target.elements.searchWordInput.value;
-    // Make API request with the word.
     try {
       const res = await fetch(`${API_URL}/${searchTerm}?key=${API_KEY}`);
-      const data = await res.json(); // An array.
+      const data = await res.json();
       parseTermData(searchTerm, data);
     } catch (e) {
-      throw new Error(e);
+      throw new Error(e); // SOrry, user.
     }
-    // Display word in UI for now.
-    evt.target.reset(); // reset the form.
+    evt.target.reset();
   }
 
   function parseTermData(term, data) {
-    let matches = [];
+    let matches = {};
     let suggestions = [];
 
     // Relevant suggestions found, but no results.
     if (data[0] && !data[0].meta) {
       suggestions = data;
     } else if (data[0]) {
-      console.log(data);
       // Relevant suggestions found, as well as results.
-      data.reduce(
-        (acc, w) => {
-          if (w.meta.id === term || w.meta.id.startsWith(`${term}:`)) {
-            // Exact match or multi-match (verb, adj, and so on).
-            const { fl: partOfSpeech, shortdef: definitions, meta } = w;
-            const match = matches.find((m) => m.partOfSpeech === w.fl);
-            if (match) match.definitions.push(...definitions);
-            else matches.push({ partOfSpeech, definitions, id: meta.uuid });
-          } else {
-            // Suggestions
-            const i = w.meta.id.indexOf(":"); // part of multi-result.
-            suggestions.push(
-              w.meta.id.substring(0, i === -1 ? w.meta.id.length : i)
-            );
-          }
-          return acc;
-        },
-        { matches, suggestions }
-      );
+      data.forEach((w) => {
+        const result = w.meta.id.match(/[^:]+/)[0]; // match until :
+        if (result === term) {
+          // Match, with new part of speech (noun, verb, transitive verb, etc...)
+          const data = matches[w.fl] || { id: w.meta.id, definitions: [] };
+          data.definitions.push(...w.shortdef);
+          matches[w.fl] = data;
+        } else {
+          suggestions.push(result);
+        }
+      });
     }
     setResults({ term, matches, suggestions });
   }

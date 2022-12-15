@@ -2,14 +2,14 @@ const SearchResults = ({ term, matches, suggestions }) => {
   return (
     <div className="has-text-centered box my-2">
       <div className="my-2">
-        {matches.map(({ partOfSpeech, definitions, id }, i) => (
-          <div key={id + `${i}`} className="my-1">
+        {Object.keys(matches).map((partOfSpeech, i) => (
+          <div key={matches[partOfSpeech].id + `${i}`} className="my-1">
             <p className="is-size-4 has-text-danger">
               {`${term} (${partOfSpeech})`}
             </p>
-            {definitions.map((definition, j) => (
+            {matches[partOfSpeech].definitions.map((definition, j) => (
               <p
-                key={id + `${i}${j}`}
+                key={matches[partOfSpeech].id + `${i}${j}`}
                 className="has-background-primary-light box has-text-dark is-size-6"
               >
                 {definition}
