@@ -1,21 +1,16 @@
+import DefinitionGroup from "./DefinitionGroup";
+
 const SearchResults = ({ term, matches, suggestions }) => {
   return (
     <div className="has-text-centered box my-2">
       <div className="my-2">
-        {Object.keys(matches).map((partOfSpeech, i) => (
-          <div key={matches[partOfSpeech].id + `${i}`} className="my-1">
-            <p className="is-size-4 has-text-danger">
-              {`${term} (${partOfSpeech})`}
-            </p>
-            {matches[partOfSpeech].definitions.map((definition, j) => (
-              <p
-                key={matches[partOfSpeech].id + `${i}${j}`}
-                className="has-background-primary-light box has-text-dark is-size-6"
-              >
-                {definition}
-              </p>
-            ))}
-          </div>
+        {Object.keys(matches).map((partOfSpeech) => (
+          <DefinitionGroup
+            key={matches[partOfSpeech].id + "$"}
+            term={term}
+            partOfSpeech={partOfSpeech}
+            {...matches[partOfSpeech]}
+          />
         ))}
       </div>
       {suggestions.length !== 0 && (
