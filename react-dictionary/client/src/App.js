@@ -3,8 +3,7 @@ import SearchForm from "./SearchForm";
 import SearchResults from "./SearchResults";
 import { useState } from "react";
 
-const API_URL = "https://www.dictionaryapi.com/api/v3/references/sd4/json";
-const API_KEY = process.env.REACT_APP_API_KEY;
+const WORD_API_URL = process.env.REACT_APP_WORD_API_URL;
 
 function App() {
   const [results, setResults] = useState({
@@ -15,39 +14,18 @@ function App() {
 
   async function handleSearchSubmit(evt) {
     evt.preventDefault();
-    const searchTerm = evt.target.elements.searchWordInput.value;
+    const term = evt.target.elements.searchWordInput.value;
     try {
-      const res = await fetch(`${API_URL}/${searchTerm}?key=${API_KEY}`);
+      const res = await fetch(`${WORD_API_URL}/${term}`);
       const data = await res.json();
-      parseTermData(searchTerm, data);
+      if (data.success) {
+        const { matches, suggestions } = data;
+        setResults({ term, matches, suggestions });
+      }
     } catch (e) {
-      throw new Error(e); // SOrry, user.
+      throw new Error(e); // Sorry, user.
     }
     evt.target.reset();
-  }
-
-  function parseTermData(term, data) {
-    let matches = {};
-    let suggestions = [];
-
-    // Relevant suggestions found, but no results.
-    if (data[0] && !data[0].meta) {
-      suggestions = data;
-    } else if (data[0]) {
-      // Relevant suggestions found, as well as results.
-      data.forEach((w) => {
-        const result = w.meta.id.match(/[^:]+/)[0]; // match until :
-        if (result === term) {
-          // Match, with new part of speech (noun, verb, transitive verb, etc...)
-          const data = matches[w.fl] || { id: w.meta.id, definitions: [] };
-          data.definitions.push(...w.shortdef);
-          matches[w.fl] = data;
-        } else {
-          suggestions.push(result);
-        }
-      });
-    }
-    setResults({ term, matches, suggestions });
   }
 
   return (
