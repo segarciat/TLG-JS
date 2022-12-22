@@ -1,14 +1,21 @@
 require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
+const serverless = require("serverless-http");
 
 const { WORDS_API_URL, WORDS_API_KEY } = process.env;
 
-const PORT = 5000;
-
 const app = express();
 
-app.get("/api/words/:searchTerm", async (req, res) => {
+const router = express.Router();
+
+router.get("/", (req, res) => {
+  res.writeHead(200, { "Content-Type": "text/html" });
+  res.write("<h1>Hello from Express.js!</h1>");
+  res.end();
+});
+
+router.get("/api/words/:searchTerm", async (req, res) => {
   const { searchTerm } = req.params;
   try {
     const response = await axios(
@@ -44,6 +51,7 @@ app.get("/api/words/:searchTerm", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
-});
+app.use("/.netlify/functions/server", router);
+
+module.exports = app;
+module.exports.handler = serverless(app);
