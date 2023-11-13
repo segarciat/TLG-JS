@@ -1,4 +1,4 @@
-# vr21 - Sergio
+# TLG - HTML, CSS, and JavaScript
 
 I'm [Sergio](https://www.linkedin.com/in/sergio-garcia-tapia/). Welcome to my VR21 project folder! Feel free to look around:
 
